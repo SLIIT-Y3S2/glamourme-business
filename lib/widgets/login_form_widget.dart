@@ -1,42 +1,34 @@
 ///
-/// This is the signup form widget
+/// This is the login form widget
 ///
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
-import 'package:glamourmebusiness/models/user_model.dart';
-import 'package:glamourmebusiness/screens/appointments_index_screen.dart';
-import 'package:glamourmebusiness/screens/main_screen.dart';
 
-class SignupFormWidget extends StatefulWidget {
-  const SignupFormWidget({super.key});
+class LoginFormWidget extends StatefulWidget {
+  const LoginFormWidget({super.key});
 
   @override
-  State<SignupFormWidget> createState() => _SignupFormWidgetState();
+  State<LoginFormWidget> createState() => _LoginFormWidgetState();
 }
 
-class _SignupFormWidgetState extends State<SignupFormWidget> {
+class _LoginFormWidgetState extends State<LoginFormWidget> {
   // To access the OnboardingBloc
   late AuthenticationBloc _authenticationBloc;
   // Global key that uniquely identifies the Form widget
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // to store the email entered by the user
   String _enteredEmail = '';
   // to store the password entered by the user
   String _enteredPassword = '';
-  // to store the name entered by the user
-  String _enteredName = '';
-  // to store the user role selected by the user
-  final UserRole _userRole = UserRole.customer;
 
   // Controllers for the input fields
-  TextEditingController? _nameController;
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
-  TextEditingController? _confirmPasswordController;
 
   //
 
@@ -44,12 +36,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   void initState() {
     super.initState();
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-
-    _authenticationBloc.add(const GetCurrentUserEvent());
-
     _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
-    _nameController = TextEditingController();
     _emailController = TextEditingController();
   }
 
@@ -61,10 +48,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       return;
     }
     // Check if the controllers are not null
-    if (_emailController == null ||
-        _passwordController == null ||
-        _nameController == null ||
-        _confirmPasswordController == null) {
+    if (_emailController == null || _passwordController == null) {
       return;
     }
     _formKey.currentState!.save();
@@ -72,13 +56,10 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     // Get the entered email, name and password
     _enteredEmail = _emailController!.text;
     _enteredPassword = _passwordController!.text;
-    _enteredName = _nameController!.text;
 
-    _authenticationBloc.add(CreateUserEvent(
-      name: _enteredName,
+    _authenticationBloc.add(SigninEvent(
       email: _enteredEmail,
       password: _enteredPassword,
-      userRole: _userRole,
     ));
   }
 
@@ -107,15 +88,6 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     return null;
   }
 
-  String? _confirmPasswordValidate(value) {
-    String password = _passwordController!.text;
-    String confirmPassword = _confirmPasswordController!.text;
-    if (password != confirmPassword) {
-      return 'Passwords do not match.';
-    }
-    return null;
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -129,38 +101,24 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        if (state is CurrentUserState) {
-          if (state.user != null) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const AppointmentIndexScreen(),
-              ),
-            );
-          }
-        }
-
-        if (state is CreatingUserState) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        if (state is SignedInState) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Creating user')));
-        } else if (state is SignupErrorState) {
+              .showSnackBar(const SnackBar(content: Text('Signing in...')));
+        } else if (state is SigningInErrorState) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(state.errorMessage),
             duration: const Duration(milliseconds: 1500),
           ));
         } else if (state is UserCreatedState) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('User created'),
+            content: Text('Signed in successfully.'),
             duration: Duration(milliseconds: 500),
           ));
-
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const MainScreen(),
-            ),
-          );
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
         }
       },
       child: SizedBox(
@@ -171,10 +129,6 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               key: _formKey,
               child: Column(
                 children: [
-                  _buildInputField(
-                    "Name",
-                    "Your name here",
-                  ),
                   const SizedBox(
                       height: 16), // Add spacing between input fields
                   _buildInputField(
@@ -189,17 +143,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                     "Your password here",
                     isPassword: true,
                   ),
-                  const SizedBox(
-                      height: 16), // Add spacing between input fields
-                  _buildInputField(
-                    "Confirm Password",
-                    "Confirm your password here",
-                    isConfirmPassword: true,
-                  ),
+
                   const Padding(padding: EdgeInsets.only(top: 28)),
                   BlocBuilder<AuthenticationBloc, AuthenticationState>(
                     builder: (context, state) {
-                      return state is CreatingUserState
+                      return state is SigningInState
                           ? const CircularProgressIndicator()
                           : Center(
                               child: SizedBox(
@@ -213,7 +161,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                                     ),
                                   ),
                                   child: const Text(
-                                    'Sign Up',
+                                    'Login',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -233,10 +181,12 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     );
   }
 
-  Widget _buildInputField(String labelText, String placeholder,
-      {bool isPassword = false,
-      bool isEmail = false,
-      isConfirmPassword = false}) {
+  Widget _buildInputField(
+    String labelText,
+    String placeholder, {
+    bool isPassword = false,
+    bool isEmail = false,
+  }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -249,7 +199,6 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             style: const TextStyle(
               color: Color(0xFF1C1C28),
               fontSize: 10,
-              fontFamily: 'DM Sans',
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -263,31 +212,22 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: TextFormField(
-            controller: isPassword
-                ? _passwordController
-                : isConfirmPassword
-                    ? _confirmPasswordController
-                    : isEmail
-                        ? _emailController
-                        : _nameController,
-            obscureText: isPassword || isConfirmPassword,
+            controller: isPassword ? _passwordController : _emailController,
+            obscureText: isPassword,
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: const TextStyle(
                 color: Color(0xFF8E90A5),
                 fontSize: 15,
-                fontFamily: 'DM Sans',
                 fontWeight: FontWeight.w400,
               ),
               border: InputBorder.none,
             ),
             validator: isPassword
                 ? _passwordValidate
-                : isConfirmPassword
-                    ? _confirmPasswordValidate
-                    : isEmail
-                        ? _emailValidate
-                        : _nameValidate,
+                : isEmail
+                    ? _emailValidate
+                    : _nameValidate,
           ),
         ),
       ],
