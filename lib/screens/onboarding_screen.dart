@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:glamourmebusiness/blocs/onboarding/onboarding_bloc.dart';
 import 'package:glamourmebusiness/data/onboarding_data_set.dart';
-import 'package:glamourmebusiness/screens/login_screen.dart';
-import 'package:glamourmebusiness/screens/signup_screen.dart';
+import 'package:glamourmebusiness/globals.dart';
+
 import 'package:glamourmebusiness/widgets/onboarding_content.dart';
 import 'package:glamourmebusiness/widgets/page_indicator.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -15,14 +13,12 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
-  late OnboardingBloc _onBoardingBloc;
   int _currentIndex = 0;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _onBoardingBloc = BlocProvider.of<OnboardingBloc>(context);
     _pageController = PageController(initialPage: 0);
   }
 
@@ -34,14 +30,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
     if (_currentIndex < index) {
       if (_currentIndex < onBoardingData.length - 1) {
-        _onBoardingBloc.add(OnBoardingNextEvent(index: _currentIndex));
         _pageController.nextPage(
             duration: const Duration(microseconds: 300),
             curve: Curves.easeInOut);
       }
     } else if (_currentIndex > index) {
       if (_currentIndex < onBoardingData.length - 1) {
-        _onBoardingBloc.add(OnBoardingPreviousEvent(index: _currentIndex));
         _pageController.previousPage(
           duration: const Duration(microseconds: 300),
           curve: Curves.easeInOut,
@@ -56,46 +50,31 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     super.dispose();
   }
 
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
   //Login Button Handler
   void onClickLogin() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
+    globalNavigatorKey.currentState!.pushReplacementNamed('/login');
   }
 
   //Get Started Button Handler
   onClickGetStarted() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const SignupScreen(),
-      ),
-    );
+    globalNavigatorKey.currentState!.pushReplacementNamed('/signup');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
-        BlocBuilder<OnboardingBloc, OnboardingState>(
-          builder: (context, state) {
-            _currentIndex = state.index;
-            return PageView.builder(
-              controller: _pageController,
-              itemCount: onBoardingData.length,
-              onPageChanged: (index) {
-                if (index <= onBoardingData.length - 1) {
-                  state.index = index;
-                  _onSwipe(index);
-                }
-              },
-              itemBuilder: (context, index) {
-                return OnboardingContent(
-                  currentIndex: index,
-                );
-              },
+        PageView.builder(
+          controller: _pageController,
+          itemCount: onBoardingData.length,
+          onPageChanged: (index) {
+            if (index <= onBoardingData.length - 1) {
+              _onSwipe(index);
+            }
+          },
+          itemBuilder: (context, index) {
+            return OnBoardingContent(
+              currentIndex: index,
             );
           },
         ),

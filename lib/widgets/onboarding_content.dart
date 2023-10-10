@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/data/onboarding_data_set.dart';
 
-class OnboardingContent extends StatelessWidget {
-  const OnboardingContent({super.key, required this.currentIndex});
+class OnBoardingContent extends StatelessWidget {
+  const OnBoardingContent({super.key, required this.currentIndex});
+
   final int currentIndex;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

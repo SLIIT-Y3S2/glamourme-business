@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:glamourmebusiness/blocs/onboarding/onboarding_bloc.dart';
 import 'package:glamourmebusiness/screens/onboarding_screen.dart';
 
 class LanguageSelectionScreen extends StatelessWidget {
@@ -11,10 +9,7 @@ class LanguageSelectionScreen extends StatelessWidget {
     void navigateToOnBoarding() {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => OnboardingBloc(),
-            child: const OnBoardingScreen(),
-          ),
+          builder: (context) => const OnBoardingScreen(),
         ),
       );
     }
