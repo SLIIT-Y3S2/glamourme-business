@@ -24,7 +24,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
   void _redirectToAuthenticate(auth.User? user) async {
     if (user == null) {
       bool ifr = await IsFirstRun.isFirstRun();
-
+      //TODO check if the user has business or not if not to the business creation screen
       if (ifr) {
         globalNavigatorKey.currentState!.pushReplacementNamed('/onboarding');
       } else {
