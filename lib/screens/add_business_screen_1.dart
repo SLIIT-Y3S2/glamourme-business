@@ -3,7 +3,6 @@ import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/screens/add_business_screen_2.dart';
 import 'package:glamourmebusiness/widgets/next_btn.dart';
 
-
 class AddbusinessScreen1 extends StatefulWidget {
   const AddbusinessScreen1({Key? key}) : super(key: key);
 
@@ -115,17 +114,17 @@ class _AddbusinessScreen1State extends State<AddbusinessScreen1> {
                   ),
                 ),
                 SizedBox(),
-                NextButton(onPressed: () {
-                // Navigate to the new screen when the button is pressed.
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AddbusinessScreen2(), // Use the SecondScreen widget from the imported file.
-                  ),
-                );
-              },)
-
-
-                
+                NextButton(
+                  onPressed: () {
+                    // Navigate to the new screen when the button is pressed.
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddbusinessScreen2(), // Use the SecondScreen widget from the imported file.
+                      ),
+                    );
+                  },
+                )
               ],
             ),
           ],

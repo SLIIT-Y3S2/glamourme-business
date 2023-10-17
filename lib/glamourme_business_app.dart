@@ -52,14 +52,14 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     ///Material App
     MaterialApp app = MaterialApp(
       title: 'GlamourMe',
-      theme: ThemeData().copyWith(
+      theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color(kSeedColor),
           primary: Color(kPrimaryColor),
         ),
         textTheme: GoogleFonts.dmSansTextTheme(),
         useMaterial3: true,
-      ),
+      ).copyWith(),
       navigatorKey: globalNavigatorKey,
       onGenerateRoute: getRouteSettings(),
     );

@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/screens/business_create_screen2.dart';
+import 'package:glamourmebusiness/screens/business_create_screen4.dart';
 
-class BusinessCreationBasicDetails extends StatefulWidget {
-  const BusinessCreationBasicDetails({super.key});
+class BusinessCreationLocationDetails extends StatefulWidget {
+  const BusinessCreationLocationDetails({super.key});
 
   @override
-  State<BusinessCreationBasicDetails> createState() =>
-      _BusinessCreationBasicDetailsState();
+  State<BusinessCreationLocationDetails> createState() =>
+      _BusinessCreationLocationDetailsState();
 }
 
-class _BusinessCreationBasicDetailsState
-    extends State<BusinessCreationBasicDetails> {
-  String selectedService = '';
-
-  void selectService(String service) {
-    setState(() {
-      selectedService = service;
-    });
-  }
-
+class _BusinessCreationLocationDetailsState
+    extends State<BusinessCreationLocationDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +26,7 @@ class _BusinessCreationBasicDetailsState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'What’s your business name?',
+              'Where is your business located at?',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFF1C1C28),
@@ -45,18 +38,7 @@ class _BusinessCreationBasicDetailsState
               ),
             ),
             const SizedBox(height: 24),
-            _buildInputField('Business Name', 'Enter your business name'),
-            const SizedBox(height: 24),
-            _buildInputField('Website (optional)', 'Enter your website'),
-            const SizedBox(height: 24),
-            _serveForGenderRadioButton(),
-            // Expanded(
-            //   child: Container(
-            //     color: Colors.amber,
-            //     width: 100,
-            //   ),
-            // ),
-            // _nextButton(context),
+            _buildInputField('Enter Address', 'Location'),
           ],
         ),
       ),
@@ -114,36 +96,6 @@ class _BusinessCreationBasicDetailsState
     );
   }
 
-  Widget _serveForGenderRadioButton() {
-    String _gender = "male";
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        ServiceOption(
-          service: "Unisex",
-          isSelected: selectedService == "Unisex",
-          onTap: () {
-            selectService("Unisex");
-          },
-        ),
-        ServiceOption(
-          service: "Gents",
-          isSelected: selectedService == "gents",
-          onTap: () {
-            selectService("gents");
-          },
-        ),
-        ServiceOption(
-          service: "Ladies",
-          isSelected: selectedService == "ladies",
-          onTap: () {
-            selectService("ladies");
-          },
-        ),
-      ],
-    );
-  }
-
   Widget _nextButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
@@ -152,7 +104,7 @@ class _BusinessCreationBasicDetailsState
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const BusinessCreationServiceSelection(),
+              builder: (context) => const BusinessCreationOpeningHours(),
             ),
           );
         },
@@ -169,41 +121,6 @@ class _BusinessCreationBasicDetailsState
             fontSize: 16,
             fontFamily: 'DM Sans',
             fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ServiceOption extends StatelessWidget {
-  final String service;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  ServiceOption({
-    required this.service,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        color: isSelected ? Colors.green : Colors.white,
-        child: SizedBox(
-          width: 100,
-          height: 80,
-          child: Center(
-            child: Text(
-              service,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 16,
-              ),
-            ),
           ),
         ),
       ),

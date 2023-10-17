@@ -1,18 +1,18 @@
 class CategoryModel {
   final String name;
-  final String image;
+  final String imageUrl;
 
-  const CategoryModel({required this.name, required this.image});
+  const CategoryModel({required this.name, required this.imageUrl});
 
   CategoryModel.init({
     required this.name,
-    required this.image,
+    required this.imageUrl,
   });
 
   toJson() {
     return {
       'name': name,
-      'image': image,
+      'image': imageUrl,
     };
   }
 }
