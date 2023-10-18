@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/data/service_categories.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
+import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen3.dart';
 import 'package:glamourmebusiness/widgets/category_card_widget.dart';
 
 class BusinessCreationServiceSelection extends StatefulWidget {
-  const BusinessCreationServiceSelection({super.key});
+  final BasicSalonDetails basicSalonDetails;
+  const BusinessCreationServiceSelection(
+      {super.key, required this.basicSalonDetails});
 
   @override
   State<BusinessCreationServiceSelection> createState() =>
@@ -16,12 +19,14 @@ class BusinessCreationServiceSelection extends StatefulWidget {
 
 class _BusinessCreationServiceSelectionState
     extends State<BusinessCreationServiceSelection> {
-  late List<CustomCheckboxType> _checkboxList;
+  late List<CategoryCheckboxType> _checkboxList;
 
   @override
   void initState() {
     super.initState();
-    _checkboxList = [...categoryData.map((e) => CustomCheckboxType(e, false))];
+    _checkboxList = [
+      ...categoryData.map((e) => CategoryCheckboxType(e, false))
+    ];
   }
 
   @override
@@ -107,8 +112,13 @@ class _BusinessCreationServiceSelectionState
               ? Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        const BusinessCreationLocationDetails(),
+                    builder: (context) => BusinessCreationLocationDetails(
+                      basicSalonDetails: widget.basicSalonDetails,
+                      selectedCategories: _checkboxList
+                          .where((element) => element.isChecked)
+                          .map((e) => e.category)
+                          .toList(),
+                    ),
                   ),
                 )
               : null;
@@ -138,9 +148,9 @@ class _BusinessCreationServiceSelectionState
   }
 }
 
-class CustomCheckboxType {
+class CategoryCheckboxType {
   final CategoryModel category;
   bool isChecked;
 
-  CustomCheckboxType(this.category, this.isChecked);
+  CategoryCheckboxType(this.category, this.isChecked);
 }

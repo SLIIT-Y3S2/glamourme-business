@@ -1,5 +1,11 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
+import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
+import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen2.dart';
 
 class BusinessCreationBasicDetails extends StatefulWidget {
@@ -12,65 +18,119 @@ class BusinessCreationBasicDetails extends StatefulWidget {
 
 class _BusinessCreationBasicDetailsState
     extends State<BusinessCreationBasicDetails> {
-  String selectedService = '';
+  void _signOut(BuildContext context) {
+    BlocProvider.of<AuthenticationBloc>(context).add(const SignOutEvent());
+  }
+
+  // to access the salon bloc
+  late SalonBloc _salonBloc;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  TextEditingController _enteredSalonNameController = TextEditingController();
+  TextEditingController _enteredWebsiteController = TextEditingController();
+  String _salonType = 'unisex';
 
   void selectService(String service) {
     setState(() {
-      selectedService = service;
+      _salonType = service;
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    _salonBloc = SalonBloc();
+    _enteredSalonNameController = TextEditingController();
+    _enteredWebsiteController = TextEditingController();
+    BlocProvider.of<AuthenticationBloc>(context)
+        .add(const GetCurrentUserEvent());
+  }
+
+  String? _salonNameValidate(value) {
+    if (value.trim().isEmpty || value == null) {
+      return 'Please enter a valid name';
+    }
+
+    return null;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _enteredSalonNameController.dispose();
+    _enteredWebsiteController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return BlocListener<SalonBloc, SalonState>(
+      listener: (context, state) {
+        // TODO: implement listener: forward if salon created
+      },
+      child: Scaffold(
+        appBar: AppBar(
           // title: const Text('Create Business'),
-          ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'What’s your business name?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF1C1C28),
-                fontSize: 23,
-                fontFamily: 'DM Sans',
-                fontWeight: FontWeight.w700,
-                height: 0,
-                letterSpacing: -0.46,
+          actions: [
+            ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
               ),
+              onPressed: () => _signOut(context),
+              child: const Text('Sign out'),
             ),
-            const SizedBox(height: 24),
-            _buildInputField('Business Name', 'Enter your business name'),
-            const SizedBox(height: 24),
-            _buildInputField('Website (optional)', 'Enter your website'),
-            const SizedBox(height: 24),
-            _serveForGenderRadioButton(),
-            // Expanded(
-            //   child: Container(
-            //     color: Colors.amber,
-            //     width: 100,
-            //   ),
-            // ),
-            // _nextButton(context),
           ],
         ),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-        child: _nextButton(context),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'What’s your business name?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF1C1C28),
+                  fontSize: 23,
+                  fontFamily: 'DM Sans',
+                  fontWeight: FontWeight.w700,
+                  height: 0,
+                  letterSpacing: -0.46,
+                ),
+              ),
+              const SizedBox(height: 24),
+              _buildInputField('Business Name', 'Enter your business name',
+                  _enteredSalonNameController),
+              const SizedBox(height: 24),
+              _buildInputField('Website (optional)', 'Enter your website',
+                  _enteredWebsiteController),
+              const SizedBox(height: 24),
+              _serveForGenderRadioButton(),
+              // Expanded(
+              //   child: Container(
+              //     color: Colors.amber,
+              //     width: 100,
+              //   ),
+              // ),
+              // _nextButton(context),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
+          child: _nextButton(context),
+        ),
       ),
     );
   }
 
-  Widget _buildInputField(String labelText, String placeholder,
-      {bool isPassword = false,
-      bool isEmail = false,
-      isConfirmPassword = false}) {
+  Widget _buildInputField(
+    String labelText,
+    String placeholder,
+    TextEditingController controller,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -97,7 +157,7 @@ class _BusinessCreationBasicDetailsState
             borderRadius: BorderRadius.circular(8),
           ),
           child: TextFormField(
-            obscureText: isPassword || isConfirmPassword,
+            controller: controller,
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: const TextStyle(
@@ -121,21 +181,21 @@ class _BusinessCreationBasicDetailsState
       children: [
         ServiceOption(
           service: "Unisex",
-          isSelected: selectedService == "Unisex",
+          isSelected: _salonType == "unisex",
           onTap: () {
-            selectService("Unisex");
+            selectService("unisex");
           },
         ),
         ServiceOption(
           service: "Gents",
-          isSelected: selectedService == "gents",
+          isSelected: _salonType == "gents",
           onTap: () {
             selectService("gents");
           },
         ),
         ServiceOption(
           service: "Ladies",
-          isSelected: selectedService == "ladies",
+          isSelected: _salonType == "ladies",
           onTap: () {
             selectService("ladies");
           },
@@ -149,10 +209,25 @@ class _BusinessCreationBasicDetailsState
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
+          // _onSubmit();
+          if (_enteredSalonNameController.text.length < 3) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please enter a valid name'),
+              ),
+            );
+            return;
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const BusinessCreationServiceSelection(),
+              builder: (context) => BusinessCreationServiceSelection(
+                basicSalonDetails: BasicSalonDetails(
+                  salonName: _enteredSalonNameController.text,
+                  website: _enteredWebsiteController.text,
+                  salonType: _salonType,
+                ),
+              ),
             ),
           );
         },

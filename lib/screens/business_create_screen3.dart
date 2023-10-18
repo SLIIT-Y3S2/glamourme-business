@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/constants.dart';
-import 'package:glamourmebusiness/screens/business_create_screen2.dart';
+import 'package:glamourmebusiness/models/category_model.dart';
+import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen4.dart';
 
 class BusinessCreationLocationDetails extends StatefulWidget {
-  const BusinessCreationLocationDetails({super.key});
+  final BasicSalonDetails basicSalonDetails;
+  final List<CategoryModel> selectedCategories;
+  const BusinessCreationLocationDetails({
+    super.key,
+    required this.basicSalonDetails,
+    required this.selectedCategories,
+  });
 
   @override
   State<BusinessCreationLocationDetails> createState() =>
@@ -13,6 +20,8 @@ class BusinessCreationLocationDetails extends StatefulWidget {
 
 class _BusinessCreationLocationDetailsState
     extends State<BusinessCreationLocationDetails> {
+  final _locationTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +58,10 @@ class _BusinessCreationLocationDetailsState
     );
   }
 
-  Widget _buildInputField(String labelText, String placeholder,
-      {bool isPassword = false,
-      bool isEmail = false,
-      isConfirmPassword = false}) {
+  Widget _buildInputField(
+    String labelText,
+    String placeholder,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -79,7 +88,7 @@ class _BusinessCreationLocationDetailsState
             borderRadius: BorderRadius.circular(8),
           ),
           child: TextFormField(
-            obscureText: isPassword || isConfirmPassword,
+            controller: _locationTextController,
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: const TextStyle(
@@ -101,10 +110,22 @@ class _BusinessCreationLocationDetailsState
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
+          if (_locationTextController.text.length < 3) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please enter a valid address'),
+              ),
+            );
+            return;
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const BusinessCreationOpeningHours(),
+              builder: (context) => BusinessCreationOpeningHours(
+                basicSalonDetails: widget.basicSalonDetails,
+                selectedCategories: widget.selectedCategories,
+                location: _locationTextController.text,
+              ),
             ),
           );
         },

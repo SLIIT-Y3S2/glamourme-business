@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
+import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/repositories/authentication/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/globals.dart';
+import 'package:glamourmebusiness/repositories/salon/salon_repository.dart';
+import 'package:glamourmebusiness/screens/business_create_screen1.dart';
 import 'package:glamourmebusiness/screens/login_screen.dart';
 import 'package:glamourmebusiness/screens/main_screen.dart';
 import 'package:glamourmebusiness/screens/onboarding_screen.dart';
@@ -22,16 +26,32 @@ class GlamourMeBusinessApp extends StatefulWidget {
 class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
   // Used to redirect to the appropriate screen
   void _redirectToAuthenticate(auth.User? user) async {
+    bool ifr = await IsFirstRun.isFirstRun();
     if (user == null) {
-      bool ifr = await IsFirstRun.isFirstRun();
-      //TODO check if the user has business or not if not to the business creation screen
       if (ifr) {
         globalNavigatorKey.currentState!.pushReplacementNamed('/onboarding');
       } else {
         globalNavigatorKey.currentState!.pushReplacementNamed('/login');
       }
     } else {
-      globalNavigatorKey.currentState!.pushReplacementNamed('/main');
+      var userDoc = firestore.FirebaseFirestore.instance
+          .collection("users")
+          .doc(user?.uid);
+      firestore.FirebaseFirestore.instance
+          .collection('salon-test')
+          .where("salonOwner", isEqualTo: userDoc)
+          .snapshots()
+          .listen(
+        (value) {
+          value.size != 0
+              ? globalNavigatorKey.currentState!.pushReplacementNamed('/main')
+              : globalNavigatorKey.currentState!
+                  .pushReplacementNamed('/create_business');
+        },
+      );
+
+      // globalNavigatorKey.currentState!.pushReplacementNamed('/create_business');
+      // globalNavigatorKey.currentState!.pushReplacementNamed('/main');
     }
   }
 
@@ -41,6 +61,12 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     auth.FirebaseAuth.instance.authStateChanges().listen((user) async {
       _redirectToAuthenticate(user);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    firestore.FirebaseFirestore.instance.terminate();
   }
 
   @override
@@ -67,7 +93,8 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (context) => authRepository),
-        RepositoryProvider(create: (context) => authenticationBloc)
+        RepositoryProvider(create: (context) => authenticationBloc),
+        RepositoryProvider(create: (context) => SalonBloc()),
       ],
       child: app,
     );
@@ -94,6 +121,8 @@ _getPageRoutes(BuildContext context, RouteSettings settings) {
       return const MainScreen();
     case '/onboarding':
       return const OnBoardingScreen();
+    case '/create_business':
+      return const BusinessCreationBasicDetails();
     default:
       //Todo add splash screen
       return const OnBoardingScreen();

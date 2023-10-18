@@ -1,61 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen4.dart';
 
-List<CustomCheckBoxOpeningHours> openingHours = [
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Monday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    true,
+List<OpeningHoursDataModel> openingHoursInitalData = [
+  OpeningHoursDataModel(
+    day: 'Monday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: true,
   ),
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Tuesday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    true,
+  OpeningHoursDataModel(
+    day: 'Tuesday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: true,
   ),
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Wednesday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    true,
+  OpeningHoursDataModel(
+    day: 'Wednesday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: true,
   ),
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Thursday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    true,
+  OpeningHoursDataModel(
+    day: 'Thursday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: true,
   ),
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Friday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    true,
+  OpeningHoursDataModel(
+    day: 'Friday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: true,
   ),
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Saturday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    false,
+  OpeningHoursDataModel(
+    day: 'Saturday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: false,
   ),
-  CustomCheckBoxOpeningHours(
-    OpeningTimeData(
-      day: 'Sunday',
-      openingTime: const TimeOfDay(hour: 8, minute: 30),
-      closingTime: const TimeOfDay(hour: 17, minute: 30),
-    ),
-    false,
+  OpeningHoursDataModel(
+    day: 'Sunday',
+    openingTime: const TimeOfDay(hour: 8, minute: 30),
+    closingTime: const TimeOfDay(hour: 17, minute: 30),
+    isOpen: false,
   ),
 ];

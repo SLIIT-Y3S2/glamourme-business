@@ -6,7 +6,7 @@ import 'package:glamourmebusiness/screens/business_create_screen2.dart';
 class CategoryCardWidget extends StatelessWidget {
   const CategoryCardWidget(this.checkBoxItem, this.onTap, {super.key});
 
-  final CustomCheckboxType checkBoxItem;
+  final CategoryCheckboxType checkBoxItem;
   final Function onTap;
 
   @override

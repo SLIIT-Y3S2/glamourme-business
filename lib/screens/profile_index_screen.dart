@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/globals.dart';
-import 'package:glamourmebusiness/screens/add_business_screen_1.dart';
 import 'package:glamourmebusiness/screens/business_create_screen1.dart';
 
 class ProfileIndexScreen extends StatelessWidget {
@@ -23,18 +22,6 @@ class ProfileIndexScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) =>
                         const BusinessCreationBasicDetails(), // Use the SecondScreen widget from the imported file.
-                  ),
-                );
-              },
-              child: const Text('Go to Second Screen'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the new screen when the button is pressed.
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const AddbusinessScreen1(), // Use the SecondScreen widget from the imported file.
                   ),
                 );
               },
