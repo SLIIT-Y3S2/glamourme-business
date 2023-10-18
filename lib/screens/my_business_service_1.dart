@@ -7,7 +7,7 @@ class MybusinessServiceScreen1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Add Business Screen')),
-      body: Text("data"),
+      body: Text("services 1"),
     );
   }
 }
