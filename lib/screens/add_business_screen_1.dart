@@ -117,11 +117,11 @@ class _AddbusinessScreen1State extends State<AddbusinessScreen1> {
                 SizedBox(),
                 NextButton(onPressed: () {
                 // Navigate to the new screen when the button is pressed.
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AddbusinessScreen2(), // Use the SecondScreen widget from the imported file.
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => AddbusinessScreen2(), // Use the SecondScreen widget from the imported file.
+                //   ),
+                // );
               },)
 
 
