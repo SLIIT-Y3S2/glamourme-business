@@ -8,6 +8,7 @@ import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart'
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/models/user_model.dart';
 import 'package:glamourmebusiness/screens/appointments_index_screen.dart';
+import 'package:glamourmebusiness/screens/business_create_screen1.dart';
 import 'package:glamourmebusiness/screens/main_screen.dart';
 
 class SignupFormWidget extends StatefulWidget {
@@ -132,11 +133,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         if (state is CurrentUserState) {
           if (state.user != null) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const AppointmentIndexScreen(),
-              ),
-            );
+            // Navigator.of(context).pushReplacement(
+            //   MaterialPageRoute(
+            //     builder: (context) => const AppointmentIndexScreen(),
+            //   ),
+            // );
           }
         }
 
@@ -155,12 +156,12 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           ));
 
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const MainScreen(),
-            ),
-          );
+          // Navigator.of(context).pushReplacement(
+          //   MaterialPageRoute(
+          //     // builder: (context) => const MainScreen(),
+          //     builder: (context) => const BusinessCreationBasicDetails(),
+          //   ),
+          // );
         }
       },
       child: SizedBox(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/globals.dart';
-import 'package:glamourmebusiness/screens/add_business_screen_1.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
-
 
 class ProfileIndexScreen extends StatelessWidget {
   const ProfileIndexScreen({Key? key}) : super(key: key);
@@ -22,17 +20,6 @@ class ProfileIndexScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Profile Screen'),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the new screen when the button is pressed.
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AddbusinessScreen1(), // Use the SecondScreen widget from the imported file.
-                  ),
-                );
-              },
-              child: Text('Go to Second Screen'),
-            ),
             ElevatedButton(
               onPressed: () => _signOut(context),
               child: const Text('Sign out'),
