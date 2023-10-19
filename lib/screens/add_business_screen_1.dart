@@ -122,7 +122,8 @@ class _AddbusinessScreen1State extends State<AddbusinessScreen1> {
                 //     builder: (context) => AddbusinessScreen2(), // Use the SecondScreen widget from the imported file.
                 //   ),
                 // );
-              },)
+              },
+              buttonText: "Next",)
 
 
                 
