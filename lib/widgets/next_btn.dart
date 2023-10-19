@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 class NextButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String buttonText; 
 
-  NextButton({required this.onPressed});
+  NextButton({
+    required this.onPressed,
+    required this.buttonText, 
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class NextButton extends StatelessWidget {
         minimumSize: Size(double.infinity, 48),
       ),
       child: Text(
-        "Next",
+        buttonText, 
         style: TextStyle(
           fontSize: 16,
           color: Colors.white,

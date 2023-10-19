@@ -14,6 +14,8 @@ const Color black1 = Color(0xFF1C1C28);
 
 const Color borderGrey = Color.fromARGB(255, 201, 201, 201);
 
+const Color dark2 = Color(0xFF555770);
+
 // For the signup form and screen
 int signupScreenColor = 0xFF05A560;
 String headingFontFamily = 'DM Sans';
