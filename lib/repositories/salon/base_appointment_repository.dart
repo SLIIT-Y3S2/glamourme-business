@@ -1,6 +1,6 @@
 import 'package:glamourmebusiness/models/salon_model.dart';
 
 abstract class BaseSalonRepository {
-  Stream<List<SalonModel>> getSalons();
+  Future<SalonModel> getSalon();
   Future<void> createSalon(SalonModel salon);
 }

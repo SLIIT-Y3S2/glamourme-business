@@ -78,18 +78,6 @@ class _BusinessCreationServiceSelectionState
                 }),
               ),
             ),
-            // TODO remove: diplay all the selected services in a list
-            Text(
-              _checkboxList
-                  .where((element) => element.isChecked)
-                  .map((e) => e.category.name)
-                  .toList()
-                  .toString(),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           ],
         ),
       ),

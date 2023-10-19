@@ -15,4 +15,11 @@ class CategoryModel {
       'image': imageUrl,
     };
   }
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      name: json['name'],
+      imageUrl: json['image'],
+    );
+  }
 }

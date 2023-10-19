@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
@@ -28,12 +29,12 @@ class SalonModel {
   final String contactNumber;
   final double rating;
   final Affordability affordability;
-  final List<ServiceModel>? services;
   final double latitude;
   final double longitude;
   final String salonOwnerId;
+  // final List<ServiceModel>? services;
   final List<CategoryModel>? categories;
-  final List<OpeningHoursDataModel> openingHours;
+  final List<OpeningHoursDataModel>? openingHours;
 
   const SalonModel({
     required this.salonId,
@@ -46,12 +47,12 @@ class SalonModel {
     required this.contactNumber,
     required this.rating,
     required this.affordability,
-    required this.services,
+    // required this.services,
     required this.latitude,
     required this.longitude,
-    required this.categories,
     required this.salonOwnerId,
-    required this.openingHours,
+    this.categories,
+    this.openingHours,
   });
 
   SalonModel.init({
@@ -72,7 +73,7 @@ class SalonModel {
     services,
   })  : salonId = uuid.v4(),
         website = website ?? '',
-        services = services ?? [],
+        // services = services ?? [],
         salonType = salonType == 'gents'
             ? SalonType.gents
             : salonType == 'ladies'
@@ -95,10 +96,7 @@ class SalonModel {
           : salonType == SalonType.ladies
               ? 'ladies'
               : 'unisex',
-      'categories':
-          categories?.map((category) => category.toJson()).toList() ?? [],
       'location': location,
-      'openingHours': openingHours.map((openingHour) => openingHour.toJson()),
       'contactNumber': contactNumber,
       'salonOwner': salonOwnerId,
       'imageUrl': imageUrl,
@@ -110,22 +108,19 @@ class SalonModel {
               ? 'pricey'
               : 'luxurious',
       'longitude': longitude,
-      'services': services?.map((service) => service.toJson()).toList() ?? [],
       'latitude': latitude,
+      'openingHours': openingHours!.map((openingHour) => openingHour.toJson()),
+      'categories':
+          categories?.map((category) => category.toJson()).toList() ?? [],
+      // 'services': services?.map((service) => service.toJson()).toList() ?? [],
     };
   }
 
-  factory SalonModel.fromJson(QueryDocumentSnapshot doc) {
-    final List<ServiceModel> salonServices = [];
-    doc.reference.collection('services').get().then((services) {
-      for (var service in services.docs) {
-        ServiceModel serviceModel = ServiceModel.fromJson(service);
-        salonServices.add(serviceModel);
-      }
-    });
+  factory SalonModel.fromJson(QueryDocumentSnapshot<Object?> doc) {
+    // for one salon
     return SalonModel(
       salonId: doc.id,
-      salonName: doc.get('salon'),
+      salonName: doc.get('salonName'),
       location: doc.get('location'),
       imageUrl: doc.get('imageUrl'),
       description: doc.get('description'),
@@ -134,7 +129,6 @@ class SalonModel {
       affordability: doc.get('affordability') == 'affordable'
           ? Affordability.affordable
           : Affordability.pricey,
-      services: salonServices,
       latitude: doc.get('latitude'),
       longitude: doc.get('longitude'),
       salonType: doc.get('salonType') == 'gents'
@@ -142,11 +136,17 @@ class SalonModel {
           : doc.get('salonType') == 'ladies'
               ? SalonType.ladies
               : SalonType.unisex,
-      categories: doc.get('categories'),
-      salonOwnerId: doc.get('salonOwnerId'),
-      openingHours: doc.get('openingHours'),
+      salonOwnerId: "doc.get(salonOwner)",
+      // services: doc.get('services').map((service) {
+      //   return ServiceModel.fromJson(service);
+      // }).toList(),
+      // categories: doc.get('categories').map((category) {
+      //   return CategoryModel.fromJson(category);
+      // }).toList(),
+      // openingHours: doc.get('openingHours').map((openingHour) {
+      //   return OpeningHoursDataModel.fromJson(openingHour);
+      // }).toList(),
     );
-    // setters
   }
 }
 
@@ -164,12 +164,26 @@ class OpeningHoursDataModel {
   });
 
   Map<String, dynamic> toJson() {
+    final now = DateTime.now();
+    var openingTimeTimeStamp = DateTime(
+        now.year, now.month, now.day, openingTime.hour, openingTime.minute);
+    var closingTimeStamp = DateTime(
+        now.year, now.month, now.day, closingTime.hour, closingTime.minute);
     return {
       'day': day,
-      'openingTime': openingTime.toString(),
-      'closingTime': closingTime.toString(),
+      'openingTime': openingTimeTimeStamp,
+      'closingTime': closingTimeStamp,
       'isOpen': isOpen,
     };
+  }
+
+  factory OpeningHoursDataModel.fromJson(Map<String, dynamic> json) {
+    return OpeningHoursDataModel(
+      day: json['day'],
+      openingTime: TimeOfDay.fromDateTime(json['openingTime'].toDate()),
+      closingTime: TimeOfDay.fromDateTime(json['closingTime'].toDate()),
+      isOpen: json['isOpen'],
+    );
   }
 }
 
