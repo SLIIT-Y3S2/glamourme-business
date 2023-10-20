@@ -45,6 +45,10 @@ dependencies:
   cloud_firestore: ^4.9.3
   logging: ^1.2.0
   uuid: ^4.1.0
+  #  image  uploading
+  image_picker: ^1.0.4
+  path: ^1.8.3
+  firebase_storage: ^11.3.1
 
 dev_dependencies:
   flutter_test:

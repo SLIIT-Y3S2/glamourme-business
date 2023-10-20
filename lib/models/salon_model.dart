@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/models/service_model.dart';
@@ -12,7 +13,7 @@ enum Affordability {
   pricey,
 }
 
-enum SalonType {
+enum GenderType {
   gents,
   ladies,
   unisex,
@@ -21,7 +22,7 @@ enum SalonType {
 class SalonModel {
   final String? salonId;
   final String salonName;
-  final SalonType salonType;
+  final GenderType salonType;
   final String? website;
   final String location;
   final String imageUrl;
@@ -32,11 +33,11 @@ class SalonModel {
   final double latitude;
   final double longitude;
   final String salonOwnerId;
-  // final List<ServiceModel>? services;
-  final List<CategoryModel>? categories;
-  final List<OpeningHoursDataModel>? openingHours;
+  final List<ServiceModel> services;
+  final List<CategoryModel> categories;
+  final List<OpeningHoursDataModel> openingHours;
 
-  const SalonModel({
+  SalonModel({
     required this.salonId,
     required this.salonName,
     this.website,
@@ -47,12 +48,12 @@ class SalonModel {
     required this.contactNumber,
     required this.rating,
     required this.affordability,
-    // required this.services,
     required this.latitude,
     required this.longitude,
     required this.salonOwnerId,
-    this.categories,
-    this.openingHours,
+    required this.categories,
+    required this.services,
+    required this.openingHours,
   });
 
   SalonModel.init({
@@ -73,12 +74,12 @@ class SalonModel {
     services,
   })  : salonId = uuid.v4(),
         website = website ?? '',
-        // services = services ?? [],
+        services = services ?? [],
         salonType = salonType == 'gents'
-            ? SalonType.gents
+            ? GenderType.gents
             : salonType == 'ladies'
-                ? SalonType.ladies
-                : SalonType.unisex,
+                ? GenderType.ladies
+                : GenderType.unisex,
         imageUrl = imageUrl ?? '',
         description = description ?? '',
         rating = rating ?? 0,
@@ -91,9 +92,9 @@ class SalonModel {
       'salonId': salonId,
       'salonName': salonName,
       'website': website,
-      'salonType': salonType == SalonType.gents
+      'salonType': salonType == GenderType.gents
           ? 'gents'
-          : salonType == SalonType.ladies
+          : salonType == GenderType.ladies
               ? 'ladies'
               : 'unisex',
       'location': location,
@@ -109,14 +110,32 @@ class SalonModel {
               : 'luxurious',
       'longitude': longitude,
       'latitude': latitude,
-      'openingHours': openingHours!.map((openingHour) => openingHour.toJson()),
-      'categories':
-          categories?.map((category) => category.toJson()).toList() ?? [],
-      // 'services': services?.map((service) => service.toJson()).toList() ?? [],
+      'openingHours': openingHours.map((openingHour) => openingHour.toJson()),
+      'categories': categories.map((category) => category.toJson()).toList(),
+      'services': services.map((service) => service.toJson()).toList(),
     };
   }
 
-  factory SalonModel.fromJson(QueryDocumentSnapshot<Object?> doc) {
+  factory SalonModel.fromJson(QueryDocumentSnapshot doc) {
+    final List<ServiceModel> salonServices = [];
+    final List<CategoryModel> salonCategories = [];
+    final List<OpeningHoursDataModel> openingHours = [];
+    doc.reference.collection('services').get().then((services) {
+      for (var service in services.docs) {
+        ServiceModel serviceModel = ServiceModel.fromJson(service);
+        salonServices.add(serviceModel);
+      }
+    });
+    for (var category in doc.get('categories')) {
+      CategoryModel categoryModel = CategoryModel.fromJson(category);
+      salonCategories.add(categoryModel);
+    }
+    for (var openingHour in doc.get('openingHours')) {
+      OpeningHoursDataModel openingHourModel =
+          OpeningHoursDataModel.fromJson(openingHour);
+      openingHours.add(openingHourModel);
+    }
+
     // for one salon
     return SalonModel(
       salonId: doc.id,
@@ -132,20 +151,14 @@ class SalonModel {
       latitude: doc.get('latitude'),
       longitude: doc.get('longitude'),
       salonType: doc.get('salonType') == 'gents'
-          ? SalonType.gents
+          ? GenderType.gents
           : doc.get('salonType') == 'ladies'
-              ? SalonType.ladies
-              : SalonType.unisex,
-      salonOwnerId: "doc.get(salonOwner)",
-      // services: doc.get('services').map((service) {
-      //   return ServiceModel.fromJson(service);
-      // }).toList(),
-      // categories: doc.get('categories').map((category) {
-      //   return CategoryModel.fromJson(category);
-      // }).toList(),
-      // openingHours: doc.get('openingHours').map((openingHour) {
-      //   return OpeningHoursDataModel.fromJson(openingHour);
-      // }).toList(),
+              ? GenderType.ladies
+              : GenderType.unisex,
+      salonOwnerId: doc.get("salonOwner").path.toString().split('/')[1],
+      services: salonServices,
+      categories: salonCategories,
+      openingHours: openingHours,
     );
   }
 }

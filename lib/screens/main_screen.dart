@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:glamourmebusiness/globals.dart';
 import 'package:glamourmebusiness/screens/appointments_index_screen.dart';
-import 'package:glamourmebusiness/screens/my_business.dart';
+import 'package:glamourmebusiness/screens/my_business_screen.dart';
 import 'package:glamourmebusiness/screens/notifications_index_screen.dart';
 import 'package:glamourmebusiness/screens/profile_index_screen.dart';
-
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,19 +16,15 @@ class MainScreen extends StatefulWidget {
 class _HomeScreenState extends State<MainScreen> {
   final _pages = [
     const AppointmentIndexScreen(),
-    
     const NotificationsIndexScreen(),
     const MyBusiness(),
     const ProfileIndexScreen(),
-    
   ];
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     appointmetNavigatorKey,
-    
     appointmetNavigatorKey,
     mybusinessNavigatorkey,
     profileNavigatorKey,
-    
   ];
 
   int _currentIndex = 0;

@@ -2,7 +2,8 @@ import 'dart:developer' as developer;
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
-import 'package:glamourmebusiness/repositories/salon/base_appointment_repository.dart';
+import 'package:glamourmebusiness/models/service_model.dart';
+import 'package:glamourmebusiness/repositories/salon/base_salon_repository.dart';
 
 class SalonRepository extends BaseSalonRepository {
   @override
@@ -11,17 +12,23 @@ class SalonRepository extends BaseSalonRepository {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference salonCollection = db.collection('salon-test');
     developer.log(salon.toJson().toString(), name: 'working??');
+    try {
+      await salonCollection.doc(salon.salonId).set({
+        ...salon.toJson(),
+        'salonOwner': db.collection('users').doc(salon.salonOwnerId),
+        'services': null,
+        'createdAt': FieldValue.serverTimestamp(),
+      }).then((value) {
+        developer.log(salon.toJson().toString(), name: 'working??');
+      }).onError((error, stackTrace) {
+        developer.log(error.toString(), name: 'Salon error');
+      });
 
-    await salonCollection.doc(salon.salonId).set({
-      ...salon.toJson(),
-      'salonOwner': db.collection('users').doc(salon.salonOwnerId),
-    }).then((value) {
-      developer.log(salon.toJson().toString(), name: 'working??');
-    }).onError((error, stackTrace) {
-      developer.log(error.toString(), name: 'Salon error');
-    });
-
-    return salon;
+      return salon;
+    } catch (error) {
+      developer.log(error.toString(), name: 'Salon creation error');
+      throw Exception(error);
+    }
   }
 
   @override
@@ -31,17 +38,16 @@ class SalonRepository extends BaseSalonRepository {
     String userId = auth.FirebaseAuth.instance.currentUser!.uid;
 
     var userDoc = db.collection('users').doc(userId);
-    late CollectionReference _salonCollection;
 
-    _salonCollection = db.collection('salon-test');
     try {
-      final salonSnapshot =
-          await _salonCollection.where('salonOwner', isEqualTo: userDoc).get();
+      final salonSnapshot = await db
+          .collection('salon-test')
+          .where('salonOwner', isEqualTo: userDoc)
+          .get();
 
-      // salonSnapshot.docs.forEach((salonDoc) {
-      //   salon = SalonModel.fromJson(salonDoc);
-      // });
-      salon = SalonModel.fromJson(salonSnapshot.docs.first);
+      if (salonSnapshot.docs.isNotEmpty) {
+        salon = SalonModel.fromJson(salonSnapshot.docs.first);
+      }
       return salon;
     } on StateError catch (error) {
       developer.log(error.runtimeType.toString(),
