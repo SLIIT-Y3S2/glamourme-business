@@ -1,4 +1,6 @@
+import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/models/service_model.dart';
@@ -11,7 +13,7 @@ enum Affordability {
   pricey,
 }
 
-enum SalonType {
+enum GenderType {
   gents,
   ladies,
   unisex,
@@ -20,7 +22,7 @@ enum SalonType {
 class SalonModel {
   final String? salonId;
   final String salonName;
-  final SalonType salonType;
+  final GenderType salonType;
   final String? website;
   final String location;
   final String imageUrl;
@@ -28,14 +30,14 @@ class SalonModel {
   final String contactNumber;
   final double rating;
   final Affordability affordability;
-  final List<ServiceModel>? services;
   final double latitude;
   final double longitude;
   final String salonOwnerId;
-  final List<CategoryModel>? categories;
+  final List<ServiceModel> services;
+  final List<CategoryModel> categories;
   final List<OpeningHoursDataModel> openingHours;
 
-  const SalonModel({
+  SalonModel({
     required this.salonId,
     required this.salonName,
     this.website,
@@ -46,11 +48,11 @@ class SalonModel {
     required this.contactNumber,
     required this.rating,
     required this.affordability,
-    required this.services,
     required this.latitude,
     required this.longitude,
-    required this.categories,
     required this.salonOwnerId,
+    required this.categories,
+    required this.services,
     required this.openingHours,
   });
 
@@ -74,10 +76,10 @@ class SalonModel {
         website = website ?? '',
         services = services ?? [],
         salonType = salonType == 'gents'
-            ? SalonType.gents
+            ? GenderType.gents
             : salonType == 'ladies'
-                ? SalonType.ladies
-                : SalonType.unisex,
+                ? GenderType.ladies
+                : GenderType.unisex,
         imageUrl = imageUrl ?? '',
         description = description ?? '',
         rating = rating ?? 0,
@@ -90,15 +92,12 @@ class SalonModel {
       'salonId': salonId,
       'salonName': salonName,
       'website': website,
-      'salonType': salonType == SalonType.gents
+      'salonType': salonType == GenderType.gents
           ? 'gents'
-          : salonType == SalonType.ladies
+          : salonType == GenderType.ladies
               ? 'ladies'
               : 'unisex',
-      'categories':
-          categories?.map((category) => category.toJson()).toList() ?? [],
       'location': location,
-      'openingHours': openingHours.map((openingHour) => openingHour.toJson()),
       'contactNumber': contactNumber,
       'salonOwner': salonOwnerId,
       'imageUrl': imageUrl,
@@ -110,22 +109,37 @@ class SalonModel {
               ? 'pricey'
               : 'luxurious',
       'longitude': longitude,
-      'services': services?.map((service) => service.toJson()).toList() ?? [],
       'latitude': latitude,
+      'openingHours': openingHours.map((openingHour) => openingHour.toJson()),
+      'categories': categories.map((category) => category.toJson()).toList(),
+      'services': services.map((service) => service.toJson()).toList(),
     };
   }
 
   factory SalonModel.fromJson(QueryDocumentSnapshot doc) {
     final List<ServiceModel> salonServices = [];
+    final List<CategoryModel> salonCategories = [];
+    final List<OpeningHoursDataModel> openingHours = [];
     doc.reference.collection('services').get().then((services) {
       for (var service in services.docs) {
         ServiceModel serviceModel = ServiceModel.fromJson(service);
         salonServices.add(serviceModel);
       }
     });
+    for (var category in doc.get('categories')) {
+      CategoryModel categoryModel = CategoryModel.fromJson(category);
+      salonCategories.add(categoryModel);
+    }
+    for (var openingHour in doc.get('openingHours')) {
+      OpeningHoursDataModel openingHourModel =
+          OpeningHoursDataModel.fromJson(openingHour);
+      openingHours.add(openingHourModel);
+    }
+
+    // for one salon
     return SalonModel(
       salonId: doc.id,
-      salonName: doc.get('salon'),
+      salonName: doc.get('salonName'),
       location: doc.get('location'),
       imageUrl: doc.get('imageUrl'),
       description: doc.get('description'),
@@ -134,19 +148,18 @@ class SalonModel {
       affordability: doc.get('affordability') == 'affordable'
           ? Affordability.affordable
           : Affordability.pricey,
-      services: salonServices,
       latitude: doc.get('latitude'),
       longitude: doc.get('longitude'),
       salonType: doc.get('salonType') == 'gents'
-          ? SalonType.gents
+          ? GenderType.gents
           : doc.get('salonType') == 'ladies'
-              ? SalonType.ladies
-              : SalonType.unisex,
-      categories: doc.get('categories'),
-      salonOwnerId: doc.get('salonOwnerId'),
-      openingHours: doc.get('openingHours'),
+              ? GenderType.ladies
+              : GenderType.unisex,
+      salonOwnerId: doc.get("salonOwner").path.toString().split('/')[1],
+      services: salonServices,
+      categories: salonCategories,
+      openingHours: openingHours,
     );
-    // setters
   }
 }
 
@@ -164,12 +177,26 @@ class OpeningHoursDataModel {
   });
 
   Map<String, dynamic> toJson() {
+    final now = DateTime.now();
+    var openingTimeTimeStamp = DateTime(
+        now.year, now.month, now.day, openingTime.hour, openingTime.minute);
+    var closingTimeStamp = DateTime(
+        now.year, now.month, now.day, closingTime.hour, closingTime.minute);
     return {
       'day': day,
-      'openingTime': openingTime.toString(),
-      'closingTime': closingTime.toString(),
+      'openingTime': openingTimeTimeStamp,
+      'closingTime': closingTimeStamp,
       'isOpen': isOpen,
     };
+  }
+
+  factory OpeningHoursDataModel.fromJson(Map<String, dynamic> json) {
+    return OpeningHoursDataModel(
+      day: json['day'],
+      openingTime: TimeOfDay.fromDateTime(json['openingTime'].toDate()),
+      closingTime: TimeOfDay.fromDateTime(json['closingTime'].toDate()),
+      isOpen: json['isOpen'],
+    );
   }
 }
 

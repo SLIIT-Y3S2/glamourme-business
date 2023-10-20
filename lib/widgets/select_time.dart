@@ -1,58 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:glamourmebusiness/constants.dart';
 
 class SelectTime extends StatefulWidget {
-  const SelectTime({Key? key}) : super(key: key);
+  final void Function(int totalMin) notifyParent;
+  const SelectTime({Key? key, required this.notifyParent}) : super(key: key);
 
   @override
   State<SelectTime> createState() => _SelectTimeState();
 }
 
 class _SelectTimeState extends State<SelectTime> {
-  String selectedTime = '';
+  int selectedHour = 0;
+  int selectedMinute = 0;
 
-  void selectService(String time) {
-    setState(() {
-      selectedTime = time;
-    });
-  }
+  Map<int, String> hoursList = {
+    0: "00",
+    1: "01",
+    2: "02",
+    3: "03",
+    4: "04",
+    5: "05",
+    6: "06",
+    7: "07",
+    8: "08",
+    9: "09",
+    10: "10",
+    11: "11",
+    12: "12"
+  };
+  Map<int, String> minutesList = {
+    0: "00",
+    15: "15",
+    30: "30",
+    45: "45",
+  };
 
   @override
   Widget build(BuildContext context) {
-    return 
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TimeOption(
-            time: "15 min",
-            isSelected: selectedTime == "15 min",
-            onTap: () {
-              selectService("15 min");
-            },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: green1),
+            borderRadius: BorderRadius.circular(5),
           ),
-          TimeOption(
-            time: "20 min",
-            isSelected: selectedTime == "20 min",
-            onTap: () {
-              selectService("20 min");
-            },
+          child: DropdownButton(
+              elevation: 0,
+              underline: Container(alignment: Alignment.center, height: 0),
+              value: selectedHour,
+              items: hoursList.entries
+                  .map((e) => DropdownMenuItem(
+                        value: e.key,
+                        child: SizedBox(
+                          width: 70,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [Text(e.value), const Text("hrs")],
+                          ),
+                        ),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  if (value != null) {
+                    widget.notifyParent(value * 60 + selectedMinute);
+                    selectedHour = value;
+                  }
+                });
+              }),
+        ),
+        const SizedBox(width: 10),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: green1),
+            borderRadius: BorderRadius.circular(5),
           ),
-          TimeOption(
-            time: "30 min",
-            isSelected: selectedTime == "30 min",
-            onTap: () {
-              selectService("30 min");
-            },
-          ),
-          TimeOption(
-            time: "45 min",
-            isSelected: selectedTime == "45 min",
-            onTap: () {
-              selectService("45 min");
-            },
-          ),
-        ],
-      );
-    
+          child: DropdownButton(
+              value: selectedMinute,
+              elevation: 0,
+              underline: Container(alignment: Alignment.center, height: 0),
+              items: minutesList.entries
+                  .map((e) => DropdownMenuItem(
+                        value: e.key,
+                        child: SizedBox(
+                          width: 70,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [Text(e.value), const Text("mins")],
+                          ),
+                        ),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  if (value != null) {
+                    widget.notifyParent(selectedHour * 60 + value);
+                    selectedMinute = value;
+                  }
+                });
+              }),
+        ),
+      ],
+    );
   }
 }
 
@@ -76,8 +126,6 @@ class TimeOption extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SizedBox(
-           
-            
             child: Center(
               child: Text(
                 time,

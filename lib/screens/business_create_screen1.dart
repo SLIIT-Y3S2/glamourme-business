@@ -7,6 +7,7 @@ import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen2.dart';
+import 'package:glamourmebusiness/widgets/gender_selection_option_widget.dart';
 
 class BusinessCreationBasicDetails extends StatefulWidget {
   const BusinessCreationBasicDetails({super.key});
@@ -175,7 +176,6 @@ class _BusinessCreationBasicDetailsState
   }
 
   Widget _serveForGenderRadioButton() {
-    String _gender = "male";
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -244,41 +244,6 @@ class _BusinessCreationBasicDetailsState
             fontSize: 16,
             fontFamily: 'DM Sans',
             fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ServiceOption extends StatelessWidget {
-  final String service;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  ServiceOption({
-    required this.service,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        color: isSelected ? Colors.green : Colors.white,
-        child: SizedBox(
-          width: 100,
-          height: 80,
-          child: Center(
-            child: Text(
-              service,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 16,
-              ),
-            ),
           ),
         ),
       ),

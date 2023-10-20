@@ -44,7 +44,8 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
           .listen(
         (value) {
           value.size != 0
-              ? globalNavigatorKey.currentState!.pushReplacementNamed('/main')
+              ? globalNavigatorKey.currentState!.pushNamedAndRemoveUntil(
+                  '/main', (Route<dynamic> route) => false)
               : globalNavigatorKey.currentState!
                   .pushReplacementNamed('/create_business');
         },
