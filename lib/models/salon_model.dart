@@ -116,20 +116,24 @@ class SalonModel {
     };
   }
 
-  factory SalonModel.fromJson(QueryDocumentSnapshot doc) {
-    final List<ServiceModel> salonServices = [];
+  factory SalonModel.fromJson(
+    QueryDocumentSnapshot doc,
+    QuerySnapshot<Map<String, dynamic>> services,
+  ) {
     final List<CategoryModel> salonCategories = [];
     final List<OpeningHoursDataModel> openingHours = [];
-    doc.reference.collection('services').get().then((services) {
-      for (var service in services.docs) {
-        ServiceModel serviceModel = ServiceModel.fromJson(service);
-        salonServices.add(serviceModel);
-      }
-    });
+    final List<ServiceModel> salonServices = [];
+
+    for (var service in services.docs) {
+      ServiceModel serviceModel = ServiceModel.fromJson(service);
+      salonServices.add(serviceModel);
+    }
+
     for (var category in doc.get('categories')) {
       CategoryModel categoryModel = CategoryModel.fromJson(category);
       salonCategories.add(categoryModel);
     }
+
     for (var openingHour in doc.get('openingHours')) {
       OpeningHoursDataModel openingHourModel =
           OpeningHoursDataModel.fromJson(openingHour);

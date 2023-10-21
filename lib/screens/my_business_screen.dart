@@ -19,12 +19,12 @@ class _MyBusinessState extends State<MyBusiness> {
   void initState() {
     BlocProvider.of<AuthenticationBloc>(context)
         .add(const GetCurrentUserEvent());
+    BlocProvider.of<SalonBloc>(context).add(const GetSalonEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SalonBloc>(context).add(GetSalonEvent());
     return BlocBuilder<SalonBloc, SalonState>(
       builder: (context, state) {
         return Scaffold(

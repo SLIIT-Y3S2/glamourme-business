@@ -30,6 +30,10 @@ class SalonCreatedState extends SalonState {
 
 class ValidatingSalonState extends SalonState {}
 
+class CreatingServiceState extends SalonState {}
+
+class ServiceCreatedState extends SalonState {}
+
 class SalonValidatedState extends SalonState {
   final SalonModel salon;
   const SalonValidatedState({required this.salon});

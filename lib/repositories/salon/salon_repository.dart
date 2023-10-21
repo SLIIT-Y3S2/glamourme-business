@@ -46,7 +46,10 @@ class SalonRepository extends BaseSalonRepository {
           .get();
 
       if (salonSnapshot.docs.isNotEmpty) {
-        salon = SalonModel.fromJson(salonSnapshot.docs.first);
+        final servicesSnapshot = salonSnapshot.docs.first;
+        var services =
+            await servicesSnapshot.reference.collection('services').get();
+        salon = SalonModel.fromJson(servicesSnapshot, services);
       }
       return salon;
     } on StateError catch (error) {
@@ -55,6 +58,28 @@ class SalonRepository extends BaseSalonRepository {
       throw Exception(error);
     } catch (error) {
       developer.log(error.toString(), name: 'Salon Repository error');
+      throw Exception(error);
+    }
+  }
+
+  @override
+  Future<void> createService(ServiceModel service, String salonId) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    final CollectionReference serviceCollection =
+        db.collection('salon-test').doc(salonId).collection('services');
+    developer.log(salonId, name: "Working??");
+    try {
+      await serviceCollection.doc(service.id).set(service.toJson());
+    } on TypeError catch (error) {
+      developer.log(error.runtimeType.toString(),
+          name: 'Service creation type error', stackTrace: error.stackTrace);
+      throw Exception(error);
+    } on StateError catch (error) {
+      developer.log(error.runtimeType.toString(),
+          name: 'Service creation error', stackTrace: error.stackTrace);
+      throw Exception(error);
+    } catch (error) {
+      developer.log(error.toString(), name: 'Service creation error');
       throw Exception(error);
     }
   }
