@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen4.dart';
 
-List<OpeningHoursDataModel> openingHoursInitalData = [
+List<OpeningHoursDataModel> openingHoursInitialData = [
   OpeningHoursDataModel(
     day: 'Monday',
     openingTime: const TimeOfDay(hour: 8, minute: 30),

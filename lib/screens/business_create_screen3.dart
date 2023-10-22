@@ -1,8 +1,13 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glamourmebusiness/blocs/location/location_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen4.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BusinessCreationLocationDetails extends StatefulWidget {
   final BasicSalonDetails basicSalonDetails;
@@ -20,41 +25,108 @@ class BusinessCreationLocationDetails extends StatefulWidget {
 
 class _BusinessCreationLocationDetailsState
     extends State<BusinessCreationLocationDetails> {
+  late GoogleMapController mapController;
+  final Map<String, LatLng> latLngList = {};
+
   final _locationTextController = TextEditingController();
+  LatLng? selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<LocationBloc>(context).add(const GetLocationEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          // title: const Text('Create Business'),
-          ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Where is your business located at?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF1C1C28),
-                fontSize: 23,
-                fontFamily: 'DM Sans',
-                fontWeight: FontWeight.w700,
-                height: 0,
-                letterSpacing: -0.46,
+    return BlocBuilder<LocationBloc, LocationState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+              // title: const Text('Create Business'),
               ),
+          body: Container(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Where is your business located at?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF1C1C28),
+                    fontSize: 23,
+                    fontFamily: 'DM Sans',
+                    fontWeight: FontWeight.w700,
+                    height: 0,
+                    letterSpacing: -0.46,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  selectedLocation != null
+                      ? 'Lat:${selectedLocation!.latitude}Lng:${selectedLocation!.longitude}'
+                      : '',
+                ),
+                _buildInputField('Enter Address', 'Location'),
+                const SizedBox(height: 24),
+                state is LocationLoaded
+                    ? Expanded(
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: true,
+                              zoomControlsEnabled: false,
+                              gestureRecognizers: {
+                                Factory<OneSequenceGestureRecognizer>(
+                                    () => EagerGestureRecognizer()),
+                              },
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(
+                                  state.location.latitude,
+                                  state.location.longitude,
+                                ),
+                                zoom: 15,
+                              ),
+                              onCameraMove: (CameraPosition? position) {
+                                if (selectedLocation != position!.target) {
+                                  setState(() {
+                                    selectedLocation = position.target;
+                                  });
+                                }
+                              },
+                            ),
+                            const Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 40),
+                                child: Icon(
+                                  Icons.location_pin,
+                                  color: Colors.red,
+                                  size: 40,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : state is GettingLocation
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Center(
+                            child: Text('Something went wrong'),
+                          ),
+              ],
             ),
-            const SizedBox(height: 24),
-            _buildInputField('Enter Address', 'Location'),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-        child: _nextButton(context),
-      ),
+          ),
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: _nextButton(context),
+          ),
+        );
+      },
     );
   }
 
@@ -110,7 +182,8 @@ class _BusinessCreationLocationDetailsState
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          if (_locationTextController.text.length < 3) {
+          if (_locationTextController.text.length < 3 ||
+              selectedLocation == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Please enter a valid address'),
@@ -125,6 +198,7 @@ class _BusinessCreationLocationDetailsState
                 basicSalonDetails: widget.basicSalonDetails,
                 selectedCategories: widget.selectedCategories,
                 location: _locationTextController.text,
+                lanLat: selectedLocation!,
               ),
             ),
           );

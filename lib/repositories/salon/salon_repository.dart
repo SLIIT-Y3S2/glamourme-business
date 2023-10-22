@@ -16,7 +16,6 @@ class SalonRepository extends BaseSalonRepository {
       await salonCollection.doc(salon.salonId).set({
         ...salon.toJson(),
         'salonOwner': db.collection('users').doc(salon.salonOwnerId),
-        'services': null,
         'createdAt': FieldValue.serverTimestamp(),
       }).then((value) {
         developer.log(salon.toJson().toString(), name: 'working??');

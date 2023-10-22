@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/globals.dart';
 import 'package:glamourmebusiness/constants.dart';
@@ -17,8 +16,6 @@ class MyBusiness extends StatefulWidget {
 class _MyBusinessState extends State<MyBusiness> {
   @override
   void initState() {
-    BlocProvider.of<AuthenticationBloc>(context)
-        .add(const GetCurrentUserEvent());
     BlocProvider.of<SalonBloc>(context).add(const GetSalonEvent());
     super.initState();
   }

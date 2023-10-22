@@ -111,7 +111,7 @@ class TimeOption extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  TimeOption({
+  const TimeOption({
     required this.time,
     required this.isSelected,
     required this.onTap,

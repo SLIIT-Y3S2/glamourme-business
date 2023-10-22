@@ -21,41 +21,48 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SalonBloc, SalonState>(
-      builder: (context, state) {
-        return Scaffold(
-            appBar: AppBar(title: const Text('Your Services')),
-            body: state is SalonLoaded
-                ? ListView(
-                    children: [
-                      ...state.salon.services.map((service) {
-                        return EditServiceCard(
-                          salonId: state.salon.salonId!,
-                          service: service,
-                        );
-                      }).toList()
-                    ],
-                  )
-                : const Center(child: CircularProgressIndicator()),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: SizedBox(
-                child: NextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          // Replace `YourNextScreen` with the actual screen you want to navigate to
-                          return MyBusinessAddNewService();
-                        },
-                      ),
-                    );
-                  },
-                  buttonText: "Add new service",
-                ),
-              ),
-            ));
+    return BlocListener<SalonBloc, SalonState>(
+      listener: (context, state) {
+        if (state is ServiceCreatedState) {
+          BlocProvider.of<SalonBloc>(context).add(const GetSalonEvent());
+        }
       },
+      child: BlocBuilder<SalonBloc, SalonState>(
+        builder: (context, state) {
+          return Scaffold(
+              appBar: AppBar(title: const Text('Your Services')),
+              body: state is SalonLoaded
+                  ? ListView(
+                      children: [
+                        ...state.salon.services.map((service) {
+                          return EditServiceCard(
+                            salonId: state.salon.salonId!,
+                            service: service,
+                          );
+                        }).toList()
+                      ],
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: SizedBox(
+                  child: NextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            // Replace `YourNextScreen` with the actual screen you want to navigate to
+                            return MyBusinessAddNewService();
+                          },
+                        ),
+                      );
+                    },
+                    buttonText: "Add new service",
+                  ),
+                ),
+              ));
+        },
+      ),
     );
   }
 }
