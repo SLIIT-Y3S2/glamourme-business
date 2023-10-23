@@ -10,7 +10,7 @@ class SalonRepository extends BaseSalonRepository {
   Future<SalonModel> createSalon(SalonModel salon) async {
     // developer.log(salon.toJson().toString(), name: 'Salon input data');
     final FirebaseFirestore db = FirebaseFirestore.instance;
-    final CollectionReference salonCollection = db.collection('salon-test');
+    final CollectionReference salonCollection = db.collection('salons');
     developer.log(salon.toJson().toString(), name: 'working??');
     try {
       await salonCollection.doc(salon.salonId).set({
@@ -40,7 +40,7 @@ class SalonRepository extends BaseSalonRepository {
 
     try {
       final salonSnapshot = await db
-          .collection('salon-test')
+          .collection('salons')
           .where('salonOwner', isEqualTo: userDoc)
           .get();
 
@@ -65,7 +65,7 @@ class SalonRepository extends BaseSalonRepository {
   Future<void> createService(ServiceModel service, String salonId) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference serviceCollection =
-        db.collection('salon-test').doc(salonId).collection('services');
+        db.collection('salons').doc(salonId).collection('services');
     developer.log(salonId, name: "Working??");
     try {
       await serviceCollection.doc(service.id).set(service.toJson());

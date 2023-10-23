@@ -40,7 +40,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
           .collection("users")
           .doc(user?.uid);
       firestore.FirebaseFirestore.instance
-          .collection('salon-test')
+          .collection('salons')
           .where("salonOwner", isEqualTo: userDoc)
           .snapshots()
           .listen(
