@@ -1,9 +1,9 @@
 import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/models/service_model.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 const uuid = Uuid();
@@ -37,6 +37,8 @@ class SalonModel {
   final List<CategoryModel> categories;
   final List<OpeningHoursDataModel> openingHours;
 
+  get locationCoordinates => LatLng(latitude, longitude);
+
   SalonModel({
     required this.salonId,
     required this.salonName,
@@ -65,12 +67,12 @@ class SalonModel {
     required this.openingHours,
     required this.contactNumber,
     required this.salonOwnerId,
+    required this.longitude,
+    required this.latitude,
     imageUrl,
     description,
     rating,
     affordability,
-    longitude,
-    latitude,
     services,
   })  : salonId = uuid.v4(),
         website = website ?? '',
@@ -83,9 +85,7 @@ class SalonModel {
         imageUrl = imageUrl ?? '',
         description = description ?? '',
         rating = rating ?? 0,
-        affordability = affordability ?? Affordability.affordable,
-        latitude = latitude ?? 0,
-        longitude = longitude ?? 0;
+        affordability = affordability ?? Affordability.affordable;
 
   Map<String, dynamic> toJson() {
     return {
@@ -112,24 +112,28 @@ class SalonModel {
       'latitude': latitude,
       'openingHours': openingHours.map((openingHour) => openingHour.toJson()),
       'categories': categories.map((category) => category.toJson()).toList(),
-      'services': services.map((service) => service.toJson()).toList(),
+      // 'services': services.map((service) => service.toJson()).toList(), // this is not needed
     };
   }
 
-  factory SalonModel.fromJson(QueryDocumentSnapshot doc) {
-    final List<ServiceModel> salonServices = [];
+  factory SalonModel.fromJson(
+    QueryDocumentSnapshot doc,
+    QuerySnapshot<Map<String, dynamic>> services,
+  ) {
     final List<CategoryModel> salonCategories = [];
     final List<OpeningHoursDataModel> openingHours = [];
-    doc.reference.collection('services').get().then((services) {
-      for (var service in services.docs) {
-        ServiceModel serviceModel = ServiceModel.fromJson(service);
-        salonServices.add(serviceModel);
-      }
-    });
+    final List<ServiceModel> salonServices = [];
+
+    for (var service in services.docs) {
+      ServiceModel serviceModel = ServiceModel.fromJson(service);
+      salonServices.add(serviceModel);
+    }
+
     for (var category in doc.get('categories')) {
       CategoryModel categoryModel = CategoryModel.fromJson(category);
       salonCategories.add(categoryModel);
     }
+
     for (var openingHour in doc.get('openingHours')) {
       OpeningHoursDataModel openingHourModel =
           OpeningHoursDataModel.fromJson(openingHour);

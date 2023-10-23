@@ -35,7 +35,7 @@ class _UploadToFirebaseState extends State<UploadToFirebase> {
   Future _uploadFile() async {
     if (_photo == null) return;
     final fileName = basename(_photo!.path);
-    final destination = 'files/$fileName';
+    final destination = 'files/$fileName ${DateTime.now()}';
 
     final ref = FirebaseStorage.instance.ref(destination);
     setState(() {

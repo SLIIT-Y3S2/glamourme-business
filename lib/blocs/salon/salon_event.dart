@@ -12,8 +12,6 @@ class GetSalonEvent extends SalonEvent {
 class CreateSalonEvent extends SalonEvent {
   final SalonModel salon;
   const CreateSalonEvent({required this.salon});
-
-  // new events
 }
 
 class ValidateSalonEvent extends SalonEvent {
@@ -29,4 +27,10 @@ class UpdateSalonEvent extends SalonEvent {
 class DeleteSalonEvent extends SalonEvent {
   final String salonId;
   const DeleteSalonEvent({required this.salonId});
+}
+
+class CreateServiceEvent extends SalonEvent {
+  final ServiceModel service;
+  final String salonId;
+  const CreateServiceEvent({required this.service, required this.salonId});
 }

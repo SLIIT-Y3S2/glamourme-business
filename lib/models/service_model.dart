@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:uuid/uuid.dart';
@@ -12,12 +13,12 @@ GenderType serviceGenderFromString(String serviceGender) =>
             : GenderType.unisex;
 
 class ServiceModel {
+  final String id;
   final String name;
   final String description;
   final String imageUrl;
   final num price;
   final String duration;
-  final String id;
   final GenderType serviceGender;
 
   // Constructor for creating a service from Firestore

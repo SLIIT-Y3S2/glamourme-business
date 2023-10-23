@@ -1,26 +1,22 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
-import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/data/initial_opening_hour.dart';
-import 'package:glamourmebusiness/globals.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
-import 'package:glamourmebusiness/screens/business_create_screen2.dart';
-import 'package:glamourmebusiness/screens/main_screen.dart';
+import 'package:glamourmebusiness/screens/business_create_screen5.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BusinessCreationOpeningHours extends StatefulWidget {
   final BasicSalonDetails basicSalonDetails;
   final List<CategoryModel> selectedCategories;
   final String location;
+  final LatLng lanLat;
   const BusinessCreationOpeningHours({
     super.key,
     required this.basicSalonDetails,
     required this.selectedCategories,
     required this.location,
+    required this.lanLat,
   });
 
   @override
@@ -32,104 +28,52 @@ class _BusinessCreationOpeningHoursState
     extends State<BusinessCreationOpeningHours> {
   late List<OpeningHoursDataModel> _openingHours;
 
-  String? _salonOwnerId;
-
   @override
   void initState() {
     super.initState();
-    _openingHours = [...openingHoursInitalData];
-    BlocProvider.of<AuthenticationBloc>(context)
-        .add(const GetCurrentUserEvent());
-  }
-
-  void _onSubmit() {
-    final authState = BlocProvider.of<AuthenticationBloc>(context).state;
-
-    if (authState is CurrentUserState) {
-      if (authState.user == null) {
-        developer.log('user is null', name: 'user');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please login to continue'),
-          ),
-        );
-        return;
-      } else {
-        _salonOwnerId = authState.user!.userId;
-        developer.log(authState.user!.userId, name: 'userId');
-      }
-    }
-
-    BlocProvider.of<SalonBloc>(context).add(
-      CreateSalonEvent(
-        salon: SalonModel.init(
-          salonName: widget.basicSalonDetails.salonName,
-          website: widget.basicSalonDetails.website,
-          salonType: widget.basicSalonDetails.salonType,
-          categories: widget.selectedCategories,
-          location: widget.location,
-          openingHours: _openingHours,
-          salonOwnerId: _salonOwnerId!,
-          contactNumber: '',
-          description: '',
-        ),
-      ),
-    );
+    _openingHours = [...openingHoursInitialData];
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SalonBloc, SalonState>(
-      listener: (context, state) {
-        if (state is SalonCreatedState) {
-          // globalNavigatorKey.currentState!.pushReplacementNamed('/main');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Business Created!'),
-            ),
-          );
-          return;
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-            // title: const Text('Create Business'),
-            ),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Opening Hours?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF1C1C28),
-                  fontSize: 23,
-                  fontFamily: 'DM Sans',
-                  fontWeight: FontWeight.w700,
-                  height: 0,
-                  letterSpacing: -0.46,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: _openingHours.length,
-                  itemBuilder: (context, index) {
-                    return _dayRow(context, data: _openingHours[index]);
-                  },
-                ),
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+          // title: const Text('Create Business'),
           ),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Opening Hours?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF1C1C28),
+                fontSize: 23,
+                fontFamily: 'DM Sans',
+                fontWeight: FontWeight.w700,
+                height: 0,
+                letterSpacing: -0.46,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: _openingHours.length,
+                itemBuilder: (context, index) {
+                  return _dayRow(context, data: _openingHours[index]);
+                },
+              ),
+            ),
+          ],
         ),
-        bottomNavigationBar: Container(
-          padding: EdgeInsets.fromLTRB(24, 8, 24, 16),
-          child: _nextButton(context),
-        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.fromLTRB(24, 8, 24, 16),
+        child: _nextButton(context),
       ),
     );
   }
@@ -265,7 +209,29 @@ class _BusinessCreationOpeningHoursState
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          _onSubmit();
+          if (_openingHours
+              .where((element) => element.isOpen)
+              .toList()
+              .isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please select at least one opening day'),
+              ),
+            );
+            return;
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BusinessCreationUploadImage(
+                basicSalonDetails: widget.basicSalonDetails,
+                selectedCategories: widget.selectedCategories,
+                location: widget.location,
+                lanLat: widget.lanLat,
+                openingHours: _openingHours,
+              ),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(signupScreenColor),

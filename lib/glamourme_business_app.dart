@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
+import 'package:glamourmebusiness/blocs/location/location_bloc.dart';
 import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/repositories/authentication/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/globals.dart';
+import 'package:glamourmebusiness/repositories/location/location_repository.dart';
 import 'package:glamourmebusiness/repositories/salon/salon_repository.dart';
 import 'package:glamourmebusiness/screens/business_create_screen1.dart';
 import 'package:glamourmebusiness/screens/login_screen.dart';
@@ -38,7 +40,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
           .collection("users")
           .doc(user?.uid);
       firestore.FirebaseFirestore.instance
-          .collection('salon-test')
+          .collection('salons')
           .where("salonOwner", isEqualTo: userDoc)
           .snapshots()
           .listen(
@@ -59,6 +61,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
   @override
   void initState() {
     super.initState();
+
     auth.FirebaseAuth.instance.authStateChanges().listen((user) async {
       _redirectToAuthenticate(user);
     });
@@ -96,6 +99,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
         RepositoryProvider(create: (context) => authRepository),
         RepositoryProvider(create: (context) => authenticationBloc),
         RepositoryProvider(create: (context) => SalonBloc()),
+        RepositoryProvider(create: (context) => LocationBloc()),
       ],
       child: app,
     );

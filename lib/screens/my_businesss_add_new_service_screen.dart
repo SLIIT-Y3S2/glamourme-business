@@ -2,9 +2,12 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/data/service_categories.dart';
 import 'package:glamourmebusiness/models/category_model.dart';
+import 'package:glamourmebusiness/models/service_model.dart';
 import 'package:glamourmebusiness/widgets/gender_selection_option_widget.dart';
 import 'package:glamourmebusiness/widgets/select_time.dart';
 import 'package:glamourmebusiness/widgets/upload_image_to_firebase_widget.dart';
@@ -21,7 +24,7 @@ class MyBusinessAddNewServiceState extends State<MyBusinessAddNewService> {
   final TextEditingController _serviceDescriptionController =
       TextEditingController();
   String _serviceGender = 'unisex';
-  int serviceTotalMins = 0;
+  int _serviceTotalMins = 0;
   String? imageDownloadURL;
   final TextEditingController _servicePriceController = TextEditingController();
 
@@ -39,7 +42,7 @@ class MyBusinessAddNewServiceState extends State<MyBusinessAddNewService> {
 
   void refreshTotalMins(int totalMins) {
     setState(() {
-      serviceTotalMins = totalMins;
+      _serviceTotalMins = totalMins;
     });
   }
 
@@ -47,180 +50,232 @@ class MyBusinessAddNewServiceState extends State<MyBusinessAddNewService> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                "Add New Service",
-                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 30),
-              _textField(
-                labelText: 'Service Name',
-                hintText: 'ex: Haircut',
-                controller: _serviceNameController,
-              ),
+    // BlocProvider.of<SalonBloc>(context).add(GetSalonEvent());
+    return BlocListener<SalonBloc, SalonState>(
+      listener: (context, state) {
+        if (state is ServiceCreatedState) {
+          Navigator.pop(context);
+        }
+      },
+      child: BlocBuilder<SalonBloc, SalonState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      "Add New Service",
+                      style:
+                          TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 30),
+                    _textField(
+                      labelText: 'Service Name',
+                      hintText: 'ex: Haircut',
+                      controller: _serviceNameController,
+                    ),
 
-              const SizedBox(
-                height: 20,
-              ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-              // ------------------------------------------ DROP down ------------->>>>>>>>>>>>>
+                    // ------------------------------------------ DROP down ------------->>>>>>>>>>>>>
 
-              const Text(
-                'Select Category',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: 5),
+                    const Text(
+                      'Select Category',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(height: 5),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(
-                    color: Colors.black54,
-                    width: 1.0,
-                  ),
-                ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: selectedCategory,
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedCategory = newValue;
-                      });
-                    }
-                  },
-                  items: categoryData
-                      .map<DropdownMenuItem<String>>((CategoryModel value) {
-                    return DropdownMenuItem<String>(
-                      value: value.name,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(value.name),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                          color: Colors.black54,
+                          width: 1.0,
+                        ),
                       ),
-                    );
-                  }).toList(),
-                  underline: Container(),
-                  icon: const Icon(Icons.arrow_drop_down),
-                ),
-              ),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: selectedCategory,
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              selectedCategory = newValue;
+                            });
+                          }
+                        },
+                        items: categoryData.map<DropdownMenuItem<String>>(
+                            (CategoryModel value) {
+                          return DropdownMenuItem<String>(
+                            value: value.name,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(value.name),
+                            ),
+                          );
+                        }).toList(),
+                        underline: Container(),
+                        icon: const Icon(Icons.arrow_drop_down),
+                      ),
+                    ),
 
-              const SizedBox(
-                height: 20,
-              ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-              // -------------------------- description ------->>>>
+                    // -------------------------- description ------->>>>
 
-              _textField(
-                  controller: _serviceDescriptionController,
-                  hintText: 'Describe your service...',
-                  labelText: 'Service Description',
-                  isDescription: true),
-              // -------------------------- service available for ------->>>>
-              const SizedBox(
-                height: 20,
-              ),
+                    _textField(
+                        controller: _serviceDescriptionController,
+                        hintText: 'Describe your service...',
+                        labelText: 'Service Description',
+                        isDescription: true),
+                    // -------------------------- service available for ------->>>>
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-              const Text(
-                'Service Available for',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: 5),
-              _serveForGenderRadioButton(),
-              // --------------------- select time  ---------------->>>>>
+                    const Text(
+                      'Service Available for',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(height: 5),
+                    _serveForGenderRadioButton(),
+                    // --------------------- select time  ---------------->>>>>
 
-              const SizedBox(
-                height: 20,
-              ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-              const Text(
-                'Select time',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: 5),
-              SelectTime(
-                notifyParent: refreshTotalMins,
-              ),
+                    const Text(
+                      'Select time',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(height: 5),
+                    SelectTime(
+                      notifyParent: refreshTotalMins,
+                    ),
 
-              // --------------------- select price  ---------------->>>>>
-              const SizedBox(
-                height: 20,
-              ),
-              _textField(
-                controller: _servicePriceController,
-                hintText: '2000',
-                labelText: 'Service Price',
-                isNumber: true,
-              ),
+                    // --------------------- select price  ---------------->>>>>
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    _textField(
+                      controller: _servicePriceController,
+                      hintText: '2000',
+                      labelText: 'Service Price',
+                      isNumber: true,
+                    ),
 
-              // --------------------- upload image to firebase  ---------------->>>>>
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Upload Image',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-              ),
-              UploadToFirebase(
-                notifyParent: refreshUrl,
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // ------------------------------------------- bottom navigation -------------->>>>>>>
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: TextButton(
-                onPressed: null,
-                style: TextButton.styleFrom(
-                  side: BorderSide(color: black3, width: 1),
-                  // Add a green color border
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Add a border radius
-                  ),
-                ),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    // --------------------- upload image to firebase  ---------------->>>>>
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Upload Image',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                    ),
+                    UploadToFirebase(
+                      notifyParent: refreshUrl,
+                    ),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(width: 10),
-            // -------------------- this is next button ---------------------------->>>>>>>>>>>>>>>>>>
-            Expanded(
-              child: TextButton(
-                onPressed: null,
-                style: TextButton.styleFrom(
-                  side: BorderSide(color: Colors.green, width: 1),
-                  backgroundColor: green1, // Add a green color border
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Add a border radius
+
+            // ------------------------------------------- bottom navigation -------------->>>>>>>
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        side: const BorderSide(color: black3, width: 1),
+                        // Add a green color border
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Add a border radius
+                        ),
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w700),
+                      ),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Save',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14),
-                ),
+                  const SizedBox(width: 10),
+                  // -------------------- this is next button ---------------------------->>>>>>>>>>>>>>>>>>
+                  if (state is SalonLoading)
+                    const Center(child: CircularProgressIndicator()),
+
+                  if (state is SalonLoaded && state.salon.salonId != null)
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () {
+                          if (imageDownloadURL == null ||
+                              _serviceTotalMins == 0 ||
+                              _serviceNameController.text.isEmpty ||
+                              _serviceDescriptionController.text.isEmpty ||
+                              _servicePriceController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please fill all the fields'),
+                              ),
+                            );
+                          } else {
+                            BlocProvider.of<SalonBloc>(context)
+                                .add(CreateServiceEvent(
+                              salonId: state.salon.salonId!,
+                              service: ServiceModel.init(
+                                serviceGender: _serviceGender,
+                                imageUrl: imageDownloadURL!,
+                                name: _serviceNameController.text,
+                                description: _serviceDescriptionController.text,
+                                price:
+                                    double.parse(_servicePriceController.text),
+                                duration: _serviceTotalMins.toString(),
+                              ),
+                            ));
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          side: const BorderSide(color: Colors.green, width: 1),
+                          backgroundColor: green1, // Add a green color border
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                10.0), // Add a border radius
+                          ),
+                        ),
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14),
+                        ),
+                      ),
+                    )
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          );
+        },
       ),
     );
   }

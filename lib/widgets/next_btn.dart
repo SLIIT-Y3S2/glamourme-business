@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class NextButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final String buttonText; 
+  final String buttonText;
 
-  NextButton({
+  const NextButton({
+    super.key,
     required this.onPressed,
-    required this.buttonText, 
+    required this.buttonText,
   });
 
   @override
@@ -21,7 +22,7 @@ class NextButton extends StatelessWidget {
         minimumSize: Size(double.infinity, 48),
       ),
       child: Text(
-        buttonText, 
+        buttonText,
         style: TextStyle(
           fontSize: 16,
           color: Colors.white,
