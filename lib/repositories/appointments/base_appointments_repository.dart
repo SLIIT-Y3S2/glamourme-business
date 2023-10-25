@@ -1,7 +1,7 @@
 import 'package:glamourmebusiness/models/appointment_model.dart';
 
 abstract class BaseAppointmentRepository {
-  Future<List<AppointmentModel>> getAppointments(String userId);
+  Future<List<AppointmentModel>> getAppointments(String salonId);
   Future<AppointmentModel> getAppointment(int id);
   Future<AppointmentModel> createAppointment(AppointmentModel appointment);
   Future<AppointmentModel> updateAppointment(AppointmentModel appointment);

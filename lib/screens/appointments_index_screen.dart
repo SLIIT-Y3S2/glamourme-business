@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
+import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -68,6 +71,7 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
           final List<Meeting> meetings = <Meeting>[];
           if (state is AppointmentsLoaded) {
             for (var appointment in state.appointments) {
+              log('message: ${appointment.startTime.toDate()}');
               meetings.add(
                 Meeting(
                   appointment.title,
@@ -78,6 +82,9 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
                 ),
               );
             }
+          } else {
+            BlocProvider.of<AppointmentBloc>(context).add(GetAppointmentsEvent(
+                userId: BlocProvider.of<AuthenticationBloc>(context).userId));
           }
 
           return Column(
@@ -106,7 +113,13 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
               ),
               Expanded(
                 child: SfCalendar(
-                  view: CalendarView.week,
+                  view: CalendarView.day,
+                  allowedViews: const <CalendarView>[
+                    CalendarView.month,
+                    CalendarView.week,
+                    CalendarView.workWeek,
+                  ],
+                  firstDayOfWeek: 1,
                   dataSource: MeetingDataSource(meetings),
                   monthViewSettings: const MonthViewSettings(
                     appointmentDisplayMode:

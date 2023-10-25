@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:glamourmebusiness/models/appointment_model.dart';
+import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/repositories/appointments/appointments_repository.dart';
+import 'package:glamourmebusiness/repositories/salon/salon_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'appointments_event.dart';
@@ -8,6 +10,7 @@ part 'appointments_state.dart';
 
 class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   final AppointmentRepository _appointmentRepository = AppointmentRepository();
+  final SalonRepository _salonRepository = SalonRepository();
 
   AppointmentBloc() : super(AppointmentInitial()) {
     on<CreateAppointmentEvent>(_onCreateAppointment);
@@ -54,7 +57,8 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     Emitter<AppointmentState> emit,
   ) async {
     emit(LoadingAppoinments());
-    await _appointmentRepository.getAppointments(event.userId).then(
+    final SalonModel salon = await _salonRepository.getSalon();
+    await _appointmentRepository.getAppointments(salon.salonId!).then(
       (appointments) {
         emit(AppointmentsLoaded(appointments: appointments));
       },

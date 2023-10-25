@@ -94,15 +94,15 @@ class AppointmentRepository extends BaseAppointmentRepository {
   }
 
   @override
-  Future<List<AppointmentModel>> getAppointments(String userId) async {
+  Future<List<AppointmentModel>> getAppointments(String salonId) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference appointmentCollection =
         db.collection('appointments');
     List<AppointmentModel> appoinmentList = [];
     final appointments = await appointmentCollection
         .where(
-          'client',
-          isEqualTo: db.collection('users').doc(userId),
+          'salon',
+          isEqualTo: db.collection('salons').doc(salonId),
         )
         .orderBy('startTime', descending: false)
         .get()
