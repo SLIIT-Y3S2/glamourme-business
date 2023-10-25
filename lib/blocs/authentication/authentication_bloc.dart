@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+
 import 'package:bloc/bloc.dart';
 import 'package:glamourmebusiness/exceptions/auth_exceptions.dart';
 import 'package:glamourmebusiness/models/user_model.dart';
@@ -11,6 +12,8 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
+  String get userId => _authenticationRepository.userId;
+
   AuthenticationBloc(this._authenticationRepository)
       : super(const AuthenticationInitialState()) {
     on<CreateUserEvent>(_createUserHandler);
