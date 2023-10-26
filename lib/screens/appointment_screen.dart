@@ -8,27 +8,32 @@ class AppointmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //Todo: Seperate UI into widgets
     return Scaffold(
-      appBar: AppBar(title: Text('Appointments')),
-      body: Container(
-        child: SfCalendar(
-          view: CalendarView.day,
-          firstDayOfWeek: 1,
-          headerStyle: const CalendarHeaderStyle(
-            textAlign: TextAlign.left,
-            textStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-            backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          'Appointments',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
+        ),
+      ),
+      body: SfCalendar(
+        view: CalendarView.day,
+        firstDayOfWeek: 1,
+        headerStyle: const CalendarHeaderStyle(
+          textAlign: TextAlign.left,
+          textStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
-          weekNumberStyle: const WeekNumberStyle(
-            backgroundColor: Colors.black,
-            textStyle: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+          backgroundColor: Colors.white,
+        ),
+        weekNumberStyle: const WeekNumberStyle(
+          backgroundColor: Colors.black,
+          textStyle: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
       ),

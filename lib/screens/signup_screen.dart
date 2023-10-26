@@ -47,7 +47,6 @@ class SignupScreen extends StatelessWidget {
                         'Already have an account?  ',
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'DM Sans',
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:flutter/material.dart';
+import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 import 'package:glamourmebusiness/blocs/location/location_bloc.dart';
 import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:glamourmebusiness/screens/login_screen.dart';
 import 'package:glamourmebusiness/screens/main_screen.dart';
 import 'package:glamourmebusiness/screens/onboarding_screen.dart';
 import 'package:glamourmebusiness/screens/signup_screen.dart';
+import 'package:glamourmebusiness/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:is_first_run/is_first_run.dart';
 
@@ -38,7 +40,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     } else {
       var userDoc = firestore.FirebaseFirestore.instance
           .collection("users")
-          .doc(user?.uid);
+          .doc(user.uid);
       firestore.FirebaseFirestore.instance
           .collection('salons')
           .where("salonOwner", isEqualTo: userDoc)
@@ -81,6 +83,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
 
     ///Material App
     MaterialApp app = MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'GlamourMe',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -100,6 +103,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
         RepositoryProvider(create: (context) => authenticationBloc),
         RepositoryProvider(create: (context) => SalonBloc()),
         RepositoryProvider(create: (context) => LocationBloc()),
+        RepositoryProvider(create: (context) => AppointmentBloc()),
       ],
       child: app,
     );
@@ -129,7 +133,6 @@ _getPageRoutes(BuildContext context, RouteSettings settings) {
     case '/create_business':
       return const BusinessCreationBasicDetails();
     default:
-      //Todo add splash screen
-      return const OnBoardingScreen();
+      return const SplashScreen();
   }
 }

@@ -50,6 +50,7 @@ class SalonRepository extends BaseSalonRepository {
             await servicesSnapshot.reference.collection('services').get();
         salon = SalonModel.fromJson(servicesSnapshot, services);
       }
+
       return salon;
     } on StateError catch (error) {
       developer.log(error.runtimeType.toString(),
