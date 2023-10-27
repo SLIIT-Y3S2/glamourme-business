@@ -11,6 +11,8 @@ import 'package:glamourmebusiness/screens/notifications_index_screen.dart';
 import 'package:glamourmebusiness/screens/profile_index_screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -68,26 +70,26 @@ class _HomeScreenState extends State<MainScreen> {
         surfaceTintColor: Colors.white,
         shadowColor: Colors.black,
         elevation: 30,
-        destinations: const [
+        destinations: [
           NavigationDestination(
             icon: Icon(Icons.calendar_month_outlined),
             selectedIcon: Icon(Icons.calendar_month),
-            label: 'Appointments',
+            label: AppLocalizations.of(context)!.appointments,
           ),
           NavigationDestination(
             icon: Icon(Icons.notifications_outlined),
-            label: 'Notifications',
+            label: AppLocalizations.of(context)!.notifications,
             selectedIcon: Icon(Icons.notifications),
           ),
           NavigationDestination(
             icon: Icon(Icons.home_work_outlined),
             selectedIcon: Icon(Icons.home_work),
-            label: 'My Business',
+            label: AppLocalizations.of(context)!.myBusiness,
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outlined),
             selectedIcon: Icon(Icons.home_work),
-            label: 'Profile',
+            label: AppLocalizations.of(context)!.profile,
           ),
         ],
       ),

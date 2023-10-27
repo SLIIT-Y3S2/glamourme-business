@@ -1,0 +1,135 @@
+{
+  "oboardingText1": "නව හමුවීම් සහ යාවත්කාලීන කිරීම් පිළිබඳ ක්ෂණික යාවත්කාලීන සමඟ ලූපයේ රැඳී සිටින්න.",
+  "oboardingText2": "දත්ත මත පදනම් වූ තීරණ ගැනීමට වටිනා තීක්ෂ්ණ බුද්ධිය සහ වාර්තා වෙත ප්‍රවේශ වන්න.",
+  "oboardingText3": "සැලෝන් සාර්ථකත්වය ළඟා කර ගැනීම සඳහා අපි එක්ව ගමනක් යමු.",
+  
+  "getStarted": "ආරම්භ කරන්න",
+  "signingIn": "පුරනය වෙමින්",
+
+  "signedInSuccessfully": "සාර්ථකව පුරනය විය.",
+  "welcomeBack": "ආපසු සාදරයෙන් පිළිගනිමු!",
+  "welcomeBackDescription": "ගිණුමක් නැද්ද?",
+  "signup": "ලියාපදිංචි වන්න",
+
+  "emailValidation": "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න",
+  "passwordValidation": "අක්ෂර 6ක් හෝ වැඩි ගණනක් සහිත වලංගු මුරපදයක් ඇතුළත් කරන්න",
+  "nameValidation": "කරුණාකර වලංගු නමක් ඇතුළත් කරන්න",
+  "passwordMatchValidation": "මුර පද ගැලපෙන්නේ නැත",
+  "creatingUser": "පරිශීලක නිර්මාණය වෙමින් පවතී",
+  "userCreated": "පරිශීලකයා නිර්මාණය කරන ලදී",
+
+  "email": "විද්යුත් තැපෑල",
+  "enterEmail": "විද්යුත් තැපෑල ඇතුලත් කරන්න",
+  "password": "මුරපදය",
+  "enterPassword": "මුරපදය ඇතුලත් කරන්න",
+  "login": "ඇතුල් වන්න",
+  "orLoginUsing": "නැතහොත් භාවිතා කර ලොග් වන්න",
+
+  "alreadyHaveAnAccount": "දැනටමත් ගිණුමක් තිබේද?",
+  "name": "නම",
+  "nameHint": "ඔබේ නම මෙහි ලියන්න",
+  "confirmPassword": "මුරපදය තහවුරු කරන්න",
+  "enterConfirmPassword": "ඔබගේ මුරපදය නැවත ලියන්න",
+  "orSignUpUsing": "Or SignUp using",
+
+
+  "whatIsYourBusinessName": "ඔබේ ව්‍යාපාරයේ නම කුමක්ද?",
+  "businessName": "ව්‍යාපාරයේ නම",
+  "enterBusinessName": "abc සැලෝන්",
+  "website": "වෙබ් අඩවිය(ඔබට තිබේ නම් පමණි)",
+  "enterWebsite": "abc@gmail.com",
+  "nextbtn": "ඊළඟ",
+
+  "hair": "හිසකෙස්",
+  "nail": "නියපොතු",
+  "barber": "බාබර්",
+  "skin": "සම",
+  "hairRemoval": "හිසකෙස් ඉවත් කිරීම",
+  "lashesAndBrows": "ඇහිබැමි සහ බ්‍රවුස්",
+  "makeup": "වෙස් ගන්වන්න",
+  "tatoo": "පච්චය",
+
+  "whereIsYourBusinessLocatedAt": "ඔබේ ව්‍යාපාරය පිහිටා ඇත්තේ කොහේද?",
+  "enteraddress": "ලිපිනය ඇතුලත් කරන්න",
+
+  "openingHours": "Opening Hours?",
+  "monday": "සඳුදා",
+  "tuesday": "අඟහරුවාදා",
+  "wednesday": "බදාදා",
+  "thursday": "බ්රහස්පතින්දා",
+  "friday": "සිකුරාදා",
+  "saturday": "සෙනසුරාදා",
+  "sunday": "ඉරිදා",
+
+
+  "uploadAnImageofYourBusiness": "ඔබේ ව්‍යාපාරයේ රූපයක් ඇතුළු කරන්න",
+  "businessCreated": "ව්‍යාපාරය නිර්මාණය විය",
+
+  "welcome": "සාදරයෙන් පිළිගනිමු",
+  "appointments": "පත්වීම්",
+  "notifications": "දැනුම්දීම්",
+  "myBusiness": "මගේ ව්‍යාපාරය",
+  "profile": "පැතිකඩ",
+
+
+  "services": "සේවා",
+  "servicesSentence": "සේවා එකතු කරන්න, ඔබ සපයන සියලුම සේවාවන් කළමනාකරණය කරන්න.",
+  "openingHours": "විවෘත වේලාවන්",
+  "openingHoursSentence": "ඔබේ විවෘත වේලාවන් සකසන්න",
+  "payments": "ගෙවීම",
+  "paymentSentence": "ගෙවීම් ක්රම, ගනුදෙනු ඉතිහාසය",
+  "yourclients": "ඔබේ ගනුදෙනුකරුවන්",
+  "yourclientSentence": "ඔබ සේවය කර ඇති සියලුම සේවාදායකයින්ගේ ලැයිස්තුව බලන්න, ප්‍රතිපෝෂණ තබන්න",
+
+
+  "yourServices": "ඔබේ සේවාවන්",
+  "addnewserviceBtn": "නව සේවාවක් එක් කරන්න",
+  "addnewserviceTopic": "නව සේවාවක් එක් කරන්න",
+
+  "serviceName": "සේවා නාමය",
+  "serviceHint": "උදා - කොණ්ඩය කැපීම",
+  "selectCtegory": "වර්ගය තෝරන්න",
+  "serviceDesc": "සේවා විස්තරය",
+  "serviceDescHint": "ඔබගේ සේවය විස්තර කරන්න..",
+  "serviceAvailableFor": "සඳහා ලබා ගත හැකි සේවාව",
+  "selectTime": "කාලය තෝරන්න",
+  "servicePrice": "සේවා මිල",
+  "uploadImg": "පින්තූර උඩුගත කරන්න",
+
+  "cancelBtn": "අවලංගු කරන්න",
+  "saveBtn": "සුරකින්න",
+
+  "pleaseFillAllTheFields": "කරුණාකර සියලුම ක්ෂේත්‍ර පුරවන්න",
+
+
+
+  
+  "language": "භාෂාව",
+  "languageDescription": "ඔබේ භාෂාව තෝරන්න",
+  "profile": "පැතිකඩ",
+  "yourFavourites": "ඔබගේ ප්රියතම",
+  "yourFavouritesDescription": "ක්ලික් කිරීමකින් ඔබගේ ප්‍රියතම සේවාවන් නැවත ඇණවුම් කරන්න",
+  "payments": "ගෙවීම",
+  "paymentsDescription": "ක්ලික් කිරීමකින් ඔබගේ ප්‍රියතම සේවාවන් නැවත ඇණවුම් කරන්න",
+  "signout": "වරන්න",
+  "home": "ගෙදර",
+  "appointments": "පත්වීම්",
+  "salons": "රූපලාවන්යාගාර",
+  "beautyServices": "රූපලාවන්ය සේවා",
+  "popularNearYou": "ඔබ අසල ජනප්‍රිය",
+  "seeAll": "ඔක්කොම බලන්න",
+  "recommended": "නිර්දේශ කර ඇත",
+  "viewAll": "බලන්න",
+  "book": "වෙන්කරවා ගැනීම",
+  "businessHrs": "ව්යාපාරික වේලාවන්",
+  "favourite": "ප්රියතම",
+
+  "ladies": "කාන්තා",
+  "gents": "පිරිමි",
+  "unisex": "ඒකලිංගික",
+
+  "checkout": "පිටවීම",
+  "appointment": "පත්වීම",
+  "selectTime": "කාලය තෝරන්න"
+
+}

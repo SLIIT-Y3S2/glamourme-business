@@ -1,0 +1,141 @@
+{
+  "oboardingText1": "Stay in the loop with instant updates on new appointments and updates.",
+  "oboardingText2": "Access valuable insights and reports to make data-driven decisions.",
+  "oboardingText3": "Let's embark on a journey to achieve salon success together.",
+
+  "getStarted": "Get Started",
+  "signingIn": "Signing in",
+
+  "signedInSuccessfully": "Signed in successfully.",
+  "welcomeBack": "Welcome Back!",
+  "welcomeBackDescription": "Don't you have an account?",
+  "signup": "Sign Up",
+
+  "emailValidation": "Please enter a valid email address",
+  "passwordValidation": "Enter a valid password with 6 or more characters",
+  "nameValidation": "Please enter a valid name",
+  "passwordMatchValidation": "Passwords do not match.",
+  "creatingUser": "Creating user",
+  "userCreated": "User created",
+
+  "email": "Email",
+  "enterEmail": "Your email here",
+  "password": "Password",
+  "enterPassword": "Your password here",
+  "login": "Login",
+  "orLoginUsing": "Or Login using",
+
+  "alreadyHaveAnAccount": "Already have an Account?",
+  "name": "Name",
+  "nameHint": "Your name here",
+  "confirmPassword": "Confirm Password",
+  "enterConfirmPassword": "Confirm your password here",
+  "orSignUpUsing": "Or SignUp using",
+
+  
+  "whatIsYourBusinessName": "What's your business name?",
+  "businessName": "Business Name",
+  "enterBusinessName": "Enter your business name",
+  "website": "website(optional)",
+  "enterWebsite": "abc@gmail.com",
+  "nextbtn": "Next",
+
+
+  "hair": "Hair",
+  "nail": "Nail",
+  "barber": "Barber",
+  "skin": "Skin",
+  "hairRemoval": "Hair removal",
+  "lashesAndBrows": "Lashes & Brows",
+  "makeup": "Makeup",
+  "tatoo": "Tatoo",
+
+  "whereIsYourBusinessLocatedAt": "Where is your business located at?",
+  "enteraddress": "Enter Address",
+
+
+  "openingHours": "Opening Hours?",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+
+  "uploadAnImageofYourBusiness": "Upload an image of your business",
+  "businessCreated": "Business Created",
+
+  "welcome": "Welcome",
+  "appointments": "Appointments",
+  "notifications": "Notifications",
+  "myBusiness": "My Business",
+  "profile": "Profile",
+
+  "services": "Services",
+  "servicesSentence": "Add services, Manage all the services you offer.",
+  "openingHours": "opening Hours",
+  "openingHoursSentence": "Adjust your opening hours",
+  "payments": "Payments",
+  "paymentSentence": "Payment methods, Transaction History",
+  "yourclients": "Your Clients",
+  "yourclientSentence": "View all list of clients you have served, Leave feedback",
+
+
+  "yourServices": "Your Serices",
+  "addnewserviceBtn": "Add new service",
+  "addnewserviceTopic": "Add New Service",
+
+  "serviceName": "Service Name",
+  "serviceHint": "ex- Haircut",
+  "selectCtegory": "Select Category",
+  "serviceDesc": "Service Description",
+  "serviceDescHint": "Describe your service..",
+  "serviceAvailableFor": "Service Available for",
+  "selectTime": "Select Time",
+  "servicePrice": "Service price",
+  "uploadImg": "Upload Image",
+
+  "cancelBtn": "cancel",
+  "saveBtn": "Save",
+
+  "pleaseFillAllTheFields": "Please fill all the fields",
+
+
+
+  
+
+  
+  
+  "language": "Language",
+  "languageDescription": "Select Your Language",
+  "profile": "Profile",
+  "yourFavourites": "Your Favourites",
+  "yourFavouritesDescription": "Reorder your favourite services in a click",
+  "payments": "Payments",
+  "paymentsDescription": "Reorder your favourite services in a click",
+  "signout": "Signout",
+  "home": "Home",
+  "appointments": "Appointments",
+  "salons": "Salons",
+  "beautyServices": "Beauty Services",
+  "popularNearYou": "Popular near you",
+  "seeAll": "see all",
+  "recommended": "Recommended",
+  "viewAll": "View",
+  "book": "Book",
+  "businessHrs": "Business Hours",
+  "favourite": "Favourite",
+
+
+  "ladies": "Ladies",
+  "gents": "Gents",
+  "unisex": "Unisex",
+
+
+  "checkout": "Checkout",
+  "appointment": "Appointment",
+  "selectTime": "Select Time"
+
+
+}

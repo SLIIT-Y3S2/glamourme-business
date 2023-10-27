@@ -5,6 +5,7 @@ import 'package:glamourmebusiness/globals.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/widgets/profile_screen_list_item.dart';
 import 'package:glamourmebusiness/screens/my_business_services_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyBusiness extends StatefulWidget {
   const MyBusiness({super.key});
@@ -33,28 +34,33 @@ class _MyBusinessState extends State<MyBusiness> {
                       // horizontal: 20,
                       vertical: 10,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          state.salon.salonName,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
-                              Icons.location_on,
-                              size: 16,
-                            ),
                             Text(
-                              " ${state.salon.location}",
+                              state.salon.salonName,
                               style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 16,
+                                ),
+                                Text(
+                                  " ${state.salon.location}",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -66,7 +72,7 @@ class _MyBusinessState extends State<MyBusiness> {
           body: ListView(
             children: <Widget>[
               ProfileScreenListItem(
-                title: 'Services',
+                title: AppLocalizations.of(context)!.services,
                 leadingIcon: Icons.favorite_outline,
                 onTapFunc: () {
                   Navigator.of(context).push(
@@ -74,29 +80,28 @@ class _MyBusinessState extends State<MyBusiness> {
                         builder: (context) => MyBusinessServices()),
                   );
                 },
-                subtitle: 'Add services, Manage all the services you offer',
+                subtitle: AppLocalizations.of(context)!.servicesSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
-                title: 'Opening Hours',
+                title: AppLocalizations.of(context)!.openingHours,
                 leadingIcon: Icons.access_time,
                 onTapFunc: null,
-                subtitle: 'Adjust your opening hours',
+                subtitle: AppLocalizations.of(context)!.openingHoursSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
-                title: 'Payments',
+                title: AppLocalizations.of(context)!.payments,
                 leadingIcon: Icons.credit_card,
                 onTapFunc: null,
-                subtitle: 'Payment methods, Transaction History',
+                subtitle: AppLocalizations.of(context)!.paymentSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
-                title: 'Your Clients',
+                title: AppLocalizations.of(context)!.yourclients,
                 leadingIcon: Icons.people_outline,
                 onTapFunc: null,
-                subtitle:
-                    'View a list of clients you have served, Leave feedback',
+                subtitle: AppLocalizations.of(context)!.yourclientSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
             ],

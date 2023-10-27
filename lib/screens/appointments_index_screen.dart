@@ -5,6 +5,8 @@ import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart'
 import 'package:glamourmebusiness/constants.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class AppointmentIndexScreen extends StatefulWidget {
   const AppointmentIndexScreen({super.key});
 
@@ -17,11 +19,22 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'My Appointments',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.w900,
+        toolbarHeight: 80,
+        title: const Padding(
+          padding: EdgeInsets.all(0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Welcome ,",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
               ),
+              Text(
+                "Kamal",
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
         ),
         // Add a burger menu icon (hamburger menu).
         leading: Builder(

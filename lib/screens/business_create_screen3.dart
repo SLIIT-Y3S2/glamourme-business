@@ -63,12 +63,7 @@ class _BusinessCreationLocationDetailsState
                   ),
                 ),
                 const SizedBox(height: 24),
-                Text(
-                  selectedLocation != null
-                      ? 'Lat:${selectedLocation!.latitude}Lng:${selectedLocation!.longitude}'
-                      : '',
-                ),
-                _buildInputField('Enter Address', 'Location'),
+                _buildInputField('Enter City Name', 'City'),
                 const SizedBox(height: 24),
                 state is LocationLoaded
                     ? Expanded(

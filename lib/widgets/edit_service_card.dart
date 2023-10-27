@@ -102,7 +102,7 @@ class EditServiceCard extends StatelessWidget {
                 // );
               },
               style: ElevatedButton.styleFrom(
-                elevation: 8,
+                elevation: 4,
                 surfaceTintColor: Colors.white,
                 backgroundColor: Colors.white,
                 shadowColor: Colors.black54,
