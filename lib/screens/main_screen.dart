@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
+import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
+import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 
 import 'package:glamourmebusiness/globals.dart';
 import 'package:glamourmebusiness/screens/appointments_index_screen.dart';
 import 'package:glamourmebusiness/screens/my_business_screen.dart';
 import 'package:glamourmebusiness/screens/notifications_index_screen.dart';
 import 'package:glamourmebusiness/screens/profile_index_screen.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -39,6 +44,17 @@ class _HomeScreenState extends State<MainScreen> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AppointmentBloc>(context).add(
+      GetAppointmentsEvent(
+          userId: BlocProvider.of<AuthenticationBloc>(context).userId),
+    );
+    BlocProvider.of<SalonBloc>(context).add(GetSalonEvent());
+    BlocProvider.of<AuthenticationBloc>(context).add(GetCurrentUserEvent());
   }
 
   @override
