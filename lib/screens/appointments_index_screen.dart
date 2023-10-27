@@ -23,48 +23,24 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.appointments,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.w900,
+        toolbarHeight: 80,
+        title: const Padding(
+          padding: EdgeInsets.all(0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Welcome ,",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
               ),
+              Text(
+                "Kamal",
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
         ),
         // Add a burger menu icon (hamburger menu).
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu), // You can use any icon you prefer.
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: green1,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: Text('Item 1'),
-              onTap: () {
-                // Handle item 1 click here.
-              },
-            ),
-            ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Handle item 2 click here.
-              },
-            ),
-          ],
-        ),
       ),
 
       ///       body part started  ---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>-------------->>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -93,26 +69,6 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Welcome!",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Kamal",
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.normal),
-                    )
-                  ],
-                ),
-              ),
               Expanded(
                 child: SfCalendar(
                   view: CalendarView.day,

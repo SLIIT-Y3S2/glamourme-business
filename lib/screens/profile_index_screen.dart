@@ -28,23 +28,18 @@ class ProfileIndexScreen extends StatelessWidget {
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.profile)),
         body: ListView(
           children: <Widget>[
-            ProfileScreenListItem(
-              title: AppLocalizations.of(context)!.payments,
-              leadingIcon: Icons.credit_card,
-              onTapFunc: null,
-              subtitle: AppLocalizations.of(context)!.paymentsDescription,
-              trailingIcon: Icons.arrow_forward_ios,
-            ),
+            // ProfileScreenListItem(
+            //   title: AppLocalizations.of(context)!.payments,
+            //   leadingIcon: Icons.credit_card,
+            //   onTapFunc: null,
+            //   subtitle: AppLocalizations.of(context)!.paymentsDescription,
+            //   trailingIcon: Icons.arrow_forward_ios,
+            // ),
             LanguageSelector(
               title: AppLocalizations.of(context)!.language,
               leadingIcon: Icons.language,
               subtitle: AppLocalizations.of(context)!.languageDescription,
             ),
-
-            SizedBox(
-              height: 50,
-            ),
-
             ProfileScreenListItem(
               title: AppLocalizations.of(context)!.signout,
               leadingIcon: Icons.logout,

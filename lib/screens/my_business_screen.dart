@@ -34,28 +34,33 @@ class _MyBusinessState extends State<MyBusiness> {
                       // horizontal: 20,
                       vertical: 10,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          state.salon.salonName,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
-                              Icons.location_on,
-                              size: 16,
-                            ),
                             Text(
-                              " ${state.salon.location}",
+                              state.salon.salonName,
                               style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 16,
+                                ),
+                                Text(
+                                  " ${state.salon.location}",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -96,8 +101,7 @@ class _MyBusinessState extends State<MyBusiness> {
                 title: AppLocalizations.of(context)!.yourclients,
                 leadingIcon: Icons.people_outline,
                 onTapFunc: null,
-                subtitle:
-                    AppLocalizations.of(context)!.yourclientSentence,
+                subtitle: AppLocalizations.of(context)!.yourclientSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
             ],

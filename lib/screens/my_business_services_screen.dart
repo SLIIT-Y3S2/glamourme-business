@@ -34,16 +34,18 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
               appBar: AppBar(
                   title: Text(AppLocalizations.of(context)!.yourServices)),
               body: state is SalonLoaded
-                  ? ListView(
-                      children: [
-                        ...state.salon.services.map((service) {
-                          return EditServiceCard(
-                            salonId: state.salon.salonId!,
-                            service: service,
-                          );
-                        }).toList()
-                      ],
-                    )
+                  ? state.salon.services.isNotEmpty
+                      ? ListView(
+                          children: [
+                            ...state.salon.services.map((service) {
+                              return EditServiceCard(
+                                salonId: state.salon.salonId!,
+                                service: service,
+                              );
+                            }).toList()
+                          ],
+                        )
+                      : const Center(child: Text("No Services Added Yet"))
                   : const Center(child: CircularProgressIndicator()),
               bottomNavigationBar: Padding(
                 padding: const EdgeInsets.all(25.0),
