@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
-import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
-
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:glamourmebusiness/constants.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AppointmentIndexScreen extends StatefulWidget {
   const AppointmentIndexScreen({super.key});
@@ -50,13 +46,13 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: Text('Item 1'),
+              title: const Text('Item 1'),
               onTap: () {
                 // Handle item 1 click here.
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              title: const Text('Item 2'),
               onTap: () {
                 // Handle item 2 click here.
               },
@@ -71,7 +67,6 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
           final List<Meeting> meetings = <Meeting>[];
           if (state is AppointmentsLoaded) {
             for (var appointment in state.appointments) {
-              log('message: ${appointment.startTime.toDate()}');
               meetings.add(
                 Meeting(
                   appointment.title,
@@ -87,48 +82,62 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
                 userId: BlocProvider.of<AuthenticationBloc>(context).userId));
           }
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Row(
+          return state is AppointmentsLoaded
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Welcome!",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    const Padding(
+                      padding: EdgeInsets.all(25.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Welcome!",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Kamal",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.normal),
+                          )
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      width: 10,
+                    Expanded(
+                      child: SfCalendar(
+                        view: CalendarView.day,
+                        initialDisplayDate: DateTime.now(),
+                        allowedViews: const <CalendarView>[
+                          CalendarView.month,
+                          CalendarView.week,
+                          CalendarView.workWeek,
+                        ],
+                        onTap: (calendarTapDetails) {},
+                        firstDayOfWeek: 1,
+                        dataSource: MeetingDataSource(meetings),
+                        monthViewSettings: const MonthViewSettings(
+                          appointmentDisplayMode:
+                              MonthAppointmentDisplayMode.indicator,
+                        ),
+                      ),
                     ),
-                    Text(
-                      "Kamal",
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.normal),
+                  ],
+                )
+              : state is LoadingAppoinments
+                  ? const Center(
+                      child: CircularProgressIndicator(),
                     )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SfCalendar(
-                  view: CalendarView.day,
-                  allowedViews: const <CalendarView>[
-                    CalendarView.month,
-                    CalendarView.week,
-                    CalendarView.workWeek,
-                  ],
-                  firstDayOfWeek: 1,
-                  dataSource: MeetingDataSource(meetings),
-                  monthViewSettings: const MonthViewSettings(
-                    appointmentDisplayMode:
-                        MonthAppointmentDisplayMode.indicator,
-                  ),
-                ),
-              ),
-            ],
-          );
+                  : state is AppointmentError
+                      ? Center(
+                          child: Text(state.message),
+                        )
+                      : const Center(
+                          child: Text('No Appointments'),
+                        );
         },
       ),
     );
