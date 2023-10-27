@@ -24,7 +24,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:syncfusion_flutter_core/localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-
 class GlamourMeBusinessApp extends StatefulWidget {
   const GlamourMeBusinessApp({super.key});
 
@@ -113,14 +112,14 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
                 state is LanguageChanged ? state.locale : const Locale('en'),
             localizationsDelegates: _localizationDelegate,
             title: 'GlamourMe',
-            theme: ThemeData().copyWith(
+            theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: Color(kSeedColor),
                 primary: Color(kPrimaryColor),
               ),
               textTheme: GoogleFonts.dmSansTextTheme(),
               useMaterial3: true,
-            ),
+            ).copyWith(),
             navigatorKey: globalNavigatorKey,
             onGenerateRoute: getRouteSettings(),
           );

@@ -1,10 +1,6 @@
-import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
-import 'package:glamourmebusiness/blocs/location/location_bloc.dart';
-import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen2.dart';
@@ -24,11 +20,6 @@ class _BusinessCreationBasicDetailsState
     BlocProvider.of<AuthenticationBloc>(context).add(const SignOutEvent());
   }
 
-  // to access the salon bloc
-  late SalonBloc _salonBloc;
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   TextEditingController _enteredSalonNameController = TextEditingController();
   TextEditingController _enteredWebsiteController = TextEditingController();
   String _salonType = 'unisex';
@@ -42,7 +33,6 @@ class _BusinessCreationBasicDetailsState
   @override
   void initState() {
     super.initState();
-    _salonBloc = SalonBloc();
     _enteredSalonNameController = TextEditingController();
     _enteredWebsiteController = TextEditingController();
     BlocProvider.of<AuthenticationBloc>(context)
@@ -59,7 +49,6 @@ class _BusinessCreationBasicDetailsState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _enteredSalonNameController.dispose();
     _enteredWebsiteController.dispose();
@@ -67,63 +56,58 @@ class _BusinessCreationBasicDetailsState
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SalonBloc, SalonState>(
-      listener: (context, state) {
-        // TODO: implement listener: forward if salon created
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          // title: const Text('Create Business'),
-          actions: [
-            ElevatedButton(
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(0),
-              ),
-              onPressed: () => _signOut(context),
-              child: const Text('Sign out'),
+    return Scaffold(
+      appBar: AppBar(
+        // title: const Text('Create Business'),
+        actions: [
+          ElevatedButton(
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(0),
             ),
+            onPressed: () => _signOut(context),
+            child: const Text('Sign out'),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'What’s your business name?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF1C1C28),
+                fontSize: 23,
+                fontFamily: 'DM Sans',
+                fontWeight: FontWeight.w700,
+                height: 0,
+                letterSpacing: -0.46,
+              ),
+            ),
+            const SizedBox(height: 24),
+            _buildInputField('Business Name', 'Enter your business name',
+                _enteredSalonNameController),
+            const SizedBox(height: 24),
+            _buildInputField('Website (optional)', 'Enter your website',
+                _enteredWebsiteController),
+            const SizedBox(height: 24),
+            _serveForGenderRadioButton(),
+            // Expanded(
+            //   child: Container(
+            //     color: Colors.amber,
+            //     width: 100,
+            //   ),
+            // ),
+            // _nextButton(context),
           ],
         ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'What’s your business name?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF1C1C28),
-                  fontSize: 23,
-                  fontFamily: 'DM Sans',
-                  fontWeight: FontWeight.w700,
-                  height: 0,
-                  letterSpacing: -0.46,
-                ),
-              ),
-              const SizedBox(height: 24),
-              _buildInputField('Business Name', 'Enter your business name',
-                  _enteredSalonNameController),
-              const SizedBox(height: 24),
-              _buildInputField('Website (optional)', 'Enter your website',
-                  _enteredWebsiteController),
-              const SizedBox(height: 24),
-              _serveForGenderRadioButton(),
-              // Expanded(
-              //   child: Container(
-              //     color: Colors.amber,
-              //     width: 100,
-              //   ),
-              // ),
-              // _nextButton(context),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Container(
-          padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
-          child: _nextButton(context),
-        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+        child: _nextButton(context),
       ),
     );
   }

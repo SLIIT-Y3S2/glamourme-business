@@ -4,6 +4,7 @@ import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:glamourmebusiness/screens/my_businesss_add_new_service_screen.dart';
 import 'package:glamourmebusiness/widgets/edit_service_card.dart';
 import 'package:glamourmebusiness/widgets/next_btn.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyBusinessServices extends StatefulWidget {
   const MyBusinessServices({super.key});
@@ -30,7 +31,8 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
       child: BlocBuilder<SalonBloc, SalonState>(
         builder: (context, state) {
           return Scaffold(
-              appBar: AppBar(title: const Text('Your Services')),
+              appBar: AppBar(
+                  title: Text(AppLocalizations.of(context)!.yourServices)),
               body: state is SalonLoaded
                   ? ListView(
                       children: [
@@ -57,7 +59,7 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
                         ),
                       );
                     },
-                    buttonText: "Add new service",
+                    buttonText: AppLocalizations.of(context)!.addnewserviceBtn,
                   ),
                 ),
               ));
