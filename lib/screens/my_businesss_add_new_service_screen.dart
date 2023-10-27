@@ -11,6 +11,7 @@ import 'package:glamourmebusiness/models/service_model.dart';
 import 'package:glamourmebusiness/widgets/gender_selection_option_widget.dart';
 import 'package:glamourmebusiness/widgets/select_time.dart';
 import 'package:glamourmebusiness/widgets/upload_image_to_firebase_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyBusinessAddNewService extends StatefulWidget {
   const MyBusinessAddNewService({super.key});
@@ -68,8 +69,8 @@ class MyBusinessAddNewServiceState extends State<MyBusinessAddNewService> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      "Add New Service",
+                    Text(
+                      AppLocalizations.of(context)!.addnewserviceTopic,
                       style:
                           TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
                     ),

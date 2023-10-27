@@ -28,8 +28,6 @@ class ProfileIndexScreen extends StatelessWidget {
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.profile)),
         body: ListView(
           children: <Widget>[
-            
-            
             ProfileScreenListItem(
               title: AppLocalizations.of(context)!.payments,
               leadingIcon: Icons.credit_card,
@@ -43,8 +41,10 @@ class ProfileIndexScreen extends StatelessWidget {
               subtitle: AppLocalizations.of(context)!.languageDescription,
             ),
 
-            SizedBox(height: 50,),
-            
+            SizedBox(
+              height: 50,
+            ),
+
             ProfileScreenListItem(
               title: AppLocalizations.of(context)!.signout,
               leadingIcon: Icons.logout,

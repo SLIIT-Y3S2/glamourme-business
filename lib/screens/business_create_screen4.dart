@@ -41,7 +41,7 @@ class _BusinessCreationOpeningHoursState
           // title: const Text('Create Business'),
           ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
