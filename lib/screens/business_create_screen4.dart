@@ -72,135 +72,146 @@ class _BusinessCreationOpeningHoursState
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.fromLTRB(24, 8, 24, 16),
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
         child: _nextButton(context),
       ),
     );
   }
 
   Widget _dayRow(BuildContext context, {required OpeningHoursDataModel data}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Checkbox(
-          value: data.isOpen,
-          onChanged: (value) {
-            setState(() {
-              data.isOpen = value!;
-            });
-          },
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color.fromARGB(255, 195, 195, 195),
+          width: 2,
         ),
-        Text(
-          data.day,
-          style: const TextStyle(
-            color: Color(0xFF1C1C28),
-            fontSize: 16,
-            fontFamily: 'DM Sans',
-            fontWeight: FontWeight.w700,
-            height: 0,
-            letterSpacing: -0.32,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Checkbox(
+            value: data.isOpen,
+            onChanged: (value) {
+              setState(() {
+                data.isOpen = value!;
+              });
+            },
           ),
-        ),
-        Row(
-          children: [
-            InkWell(
-              onTap: () async {
-                final TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: data.openingTime,
-                  initialEntryMode: TimePickerEntryMode.dial,
-                );
-                if (picked != null && picked != data.openingTime) {
-                  setState(() {
-                    data.openingTime = picked;
-                  });
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Color(0xFF1C1C28),
-                    width: 1,
+          Text(
+            data.day,
+            style: const TextStyle(
+              color: Color(0xFF1C1C28),
+              fontSize: 16,
+              fontFamily: 'DM Sans',
+              fontWeight: FontWeight.w700,
+              height: 0,
+              letterSpacing: -0.32,
+            ),
+          ),
+          Row(
+            children: [
+              InkWell(
+                onTap: () async {
+                  final TimeOfDay? picked = await showTimePicker(
+                    context: context,
+                    initialTime: data.openingTime,
+                    initialEntryMode: TimePickerEntryMode.dial,
+                  );
+                  if (picked != null && picked != data.openingTime) {
+                    setState(() {
+                      data.openingTime = picked;
+                    });
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
                   ),
-                ),
-                width: 90,
-                alignment: Alignment.center,
-                child: Text(
-                  '${data.openingTime.hour}:${data.openingTime.minute} ${data.openingTime.period == DayPeriod.am ? 'AM' : 'PM'}',
-                  style: const TextStyle(
-                    color: Color(0xFF1C1C28),
-                    fontSize: 16,
-                    fontFamily: 'DM Sans',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                    letterSpacing: -0.32,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 195, 195, 195),
+                      width: 2,
+                    ),
+                  ),
+                  width: 90,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${data.openingTime.hour}:${data.openingTime.minute} ${data.openingTime.period == DayPeriod.am ? 'AM' : 'PM'}',
+                    style: const TextStyle(
+                      color: Color(0xFF1C1C28),
+                      fontSize: 16,
+                      fontFamily: 'DM Sans',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                      letterSpacing: -0.32,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              "-",
-              style: TextStyle(
-                color: Color(0xFF1C1C28),
-                fontSize: 16,
-                fontFamily: 'DM Sans',
-                fontWeight: FontWeight.w400,
-                height: 0,
-                letterSpacing: -0.32,
-              ),
-            ),
-            const SizedBox(width: 8),
-            InkWell(
-              onTap: () async {
-                final TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: data.closingTime,
-                  initialEntryMode: TimePickerEntryMode.dial,
-                );
-                if (picked != null && picked != data.closingTime) {
-                  setState(() {
-                    data.closingTime = picked;
-                  });
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Color(0xFF1C1C28),
-                    width: 1,
-                  ),
-                ),
-                width: 90,
-                alignment: Alignment.center,
-                child: Text(
-                  '${data.closingTime.hour}:${data.closingTime.minute} ${data.closingTime.period == DayPeriod.am ? 'AM' : 'PM'}',
-                  style: const TextStyle(
-                    color: Color(0xFF1C1C28),
-                    fontSize: 16,
-                    fontFamily: 'DM Sans',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                    letterSpacing: -0.32,
-                  ),
+              const SizedBox(width: 8),
+              const Text(
+                "-",
+                style: TextStyle(
+                  color: Color(0xFF1C1C28),
+                  fontSize: 16,
+                  fontFamily: 'DM Sans',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                  letterSpacing: -0.32,
                 ),
               ),
-            ),
-          ],
-        ),
-        // _dayText(context),
-        // _timeRow(context),
-      ],
+              const SizedBox(width: 8),
+              InkWell(
+                onTap: () async {
+                  final TimeOfDay? picked = await showTimePicker(
+                    context: context,
+                    initialTime: data.closingTime,
+                    initialEntryMode: TimePickerEntryMode.dial,
+                  );
+                  if (picked != null && picked != data.closingTime) {
+                    setState(() {
+                      data.closingTime = picked;
+                    });
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 195, 195, 195),
+                      width: 2,
+                    ),
+                  ),
+                  width: 90,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${data.closingTime.hour}:${data.closingTime.minute} ${data.closingTime.period == DayPeriod.am ? 'AM' : 'PM'}',
+                    style: const TextStyle(
+                      color: Color(0xFF1C1C28),
+                      fontSize: 16,
+                      fontFamily: 'DM Sans',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                      letterSpacing: -0.32,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // _dayText(context),
+          // _timeRow(context),
+        ],
+      ),
     );
   }
 
