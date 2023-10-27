@@ -88,7 +88,7 @@ class _HomeScreenState extends State<MainScreen> {
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outlined),
-            selectedIcon: Icon(Icons.home_work),
+            selectedIcon: Icon(Icons.person),
             label: AppLocalizations.of(context)!.profile,
           ),
         ],

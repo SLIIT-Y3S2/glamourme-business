@@ -36,6 +36,7 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
               body: state is SalonLoaded
                   ? state.salon.services.isNotEmpty
                       ? ListView(
+                          padding: const EdgeInsets.all(16),
                           children: [
                             ...state.salon.services.map((service) {
                               return EditServiceCard(
@@ -45,10 +46,21 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
                             }).toList()
                           ],
                         )
-                      : const Center(child: Text("No Services Added Yet"))
+                      : const Center(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              size: 48,
+                              color: Color.fromARGB(255, 92, 92, 92),
+                            ),
+                            Text("No Services Added Yet"),
+                          ],
+                        ))
                   : const Center(child: CircularProgressIndicator()),
               bottomNavigationBar: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: SizedBox(
                   child: NextButton(
                     onPressed: () {
