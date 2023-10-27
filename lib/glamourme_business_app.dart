@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 import 'package:glamourmebusiness/blocs/location/location_bloc.dart';
 import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
+import 'package:glamourmebusiness/blocs/language/language_bloc.dart';
 import 'package:glamourmebusiness/repositories/authentication/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
@@ -17,6 +18,10 @@ import 'package:glamourmebusiness/screens/onboarding_screen.dart';
 import 'package:glamourmebusiness/screens/signup_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:syncfusion_flutter_core/localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 class GlamourMeBusinessApp extends StatefulWidget {
   const GlamourMeBusinessApp({super.key});
@@ -26,6 +31,16 @@ class GlamourMeBusinessApp extends StatefulWidget {
 }
 
 class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
+  final List<Locale> _supportedLocales = const [
+    Locale('en', 'US'),
+    Locale('si'),
+  ];
+  final List<LocalizationsDelegate> _localizationDelegate = const [
+    AppLocalizations.delegate, // Add this line
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ];
   // Used to redirect to the appropriate screen
   void _redirectToAuthenticate(auth.User? user) async {
     bool ifr = await IsFirstRun.isFirstRun();
@@ -79,29 +94,35 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     final AuthenticationBloc authenticationBloc =
         AuthenticationBloc(authRepository);
 
-    ///Material App
-    MaterialApp app = MaterialApp(
-      title: 'GlamourMe',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(kSeedColor),
-          primary: Color(kPrimaryColor),
-        ),
-        textTheme: GoogleFonts.dmSansTextTheme(),
-        useMaterial3: true,
-      ).copyWith(),
-      navigatorKey: globalNavigatorKey,
-      onGenerateRoute: getRouteSettings(),
-    );
-
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (context) => authRepository),
         RepositoryProvider(create: (context) => authenticationBloc),
         RepositoryProvider(create: (context) => SalonBloc()),
         RepositoryProvider(create: (context) => LocationBloc()),
+        RepositoryProvider(create: (context) => LanguageBloc()),
       ],
-      child: app,
+      child: BlocBuilder<LanguageBloc, LanguageState>(
+        builder: (context, state) {
+          return MaterialApp(
+            supportedLocales: _supportedLocales,
+            locale:
+                state is LanguageChanged ? state.locale : const Locale('en'),
+            localizationsDelegates: _localizationDelegate,
+            title: 'GlamourMe',
+            theme: ThemeData().copyWith(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Color(kSeedColor),
+                primary: Color(kPrimaryColor),
+              ),
+              textTheme: GoogleFonts.dmSansTextTheme(),
+              useMaterial3: true,
+            ),
+            navigatorKey: globalNavigatorKey,
+            onGenerateRoute: getRouteSettings(),
+          );
+        },
+      ),
     );
   }
 }

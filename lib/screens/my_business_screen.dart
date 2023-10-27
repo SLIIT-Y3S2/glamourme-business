@@ -5,6 +5,7 @@ import 'package:glamourmebusiness/globals.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/widgets/profile_screen_list_item.dart';
 import 'package:glamourmebusiness/screens/my_business_services_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyBusiness extends StatefulWidget {
   const MyBusiness({super.key});
@@ -66,7 +67,7 @@ class _MyBusinessState extends State<MyBusiness> {
           body: ListView(
             children: <Widget>[
               ProfileScreenListItem(
-                title: 'Services',
+                title: AppLocalizations.of(context)!.yourFavourites,
                 leadingIcon: Icons.favorite_outline,
                 onTapFunc: () {
                   Navigator.of(context).push(
@@ -78,25 +79,25 @@ class _MyBusinessState extends State<MyBusiness> {
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
-                title: 'Opening Hours',
+                title: AppLocalizations.of(context)!.openingHours,
                 leadingIcon: Icons.access_time,
                 onTapFunc: null,
-                subtitle: 'Adjust your opening hours',
+                subtitle: AppLocalizations.of(context)!.openingHoursSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
-                title: 'Payments',
+                title: AppLocalizations.of(context)!.payments,
                 leadingIcon: Icons.credit_card,
                 onTapFunc: null,
                 subtitle: 'Payment methods, Transaction History',
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
-                title: 'Your Clients',
+                title: AppLocalizations.of(context)!.yourclients,
                 leadingIcon: Icons.people_outline,
                 onTapFunc: null,
                 subtitle:
-                    'View a list of clients you have served, Leave feedback',
+                    AppLocalizations.of(context)!.yourclientSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
             ],
