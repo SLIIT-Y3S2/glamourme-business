@@ -67,7 +67,7 @@ class _MyBusinessState extends State<MyBusiness> {
           body: ListView(
             children: <Widget>[
               ProfileScreenListItem(
-                title: AppLocalizations.of(context)!.yourFavourites,
+                title: AppLocalizations.of(context)!.services,
                 leadingIcon: Icons.favorite_outline,
                 onTapFunc: () {
                   Navigator.of(context).push(
@@ -75,7 +75,7 @@ class _MyBusinessState extends State<MyBusiness> {
                         builder: (context) => MyBusinessServices()),
                   );
                 },
-                subtitle: 'Add services, Manage all the services you offer',
+                subtitle: AppLocalizations.of(context)!.servicesSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
@@ -89,7 +89,7 @@ class _MyBusinessState extends State<MyBusiness> {
                 title: AppLocalizations.of(context)!.payments,
                 leadingIcon: Icons.credit_card,
                 onTapFunc: null,
-                subtitle: 'Payment methods, Transaction History',
+                subtitle: AppLocalizations.of(context)!.paymentSentence,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
               ProfileScreenListItem(
