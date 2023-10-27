@@ -9,6 +9,8 @@ import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:glamourmebusiness/constants.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class AppointmentIndexScreen extends StatefulWidget {
   const AppointmentIndexScreen({super.key});
 
@@ -22,7 +24,7 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My Appointments',
+          AppLocalizations.of(context)!.appointments,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w900,
               ),
