@@ -72,7 +72,7 @@ class EditServiceCard extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      '${service.duration} min',
+                      '${int.parse(service.duration) ~/ 60} hrs ${int.parse(service.duration) % 60} min',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontSize: 13,
                             color: Colors.grey.shade600,
@@ -89,31 +89,35 @@ class EditServiceCard extends StatelessWidget {
           ),
           const Spacer(),
           ElevatedButton(
-              onPressed: () {
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => PlaceAppointmentScreen(
-                //       salonId: salonId,
-                //       service: service,
-                //       openingTime: openingTime,
-                //       closingTime: closingTime,
-                //     ),
-                //   ),
-                // );
-              },
-              style: ElevatedButton.styleFrom(
-                elevation: 4,
-                surfaceTintColor: Colors.white,
-                backgroundColor: Colors.white,
-                shadowColor: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+            onPressed: () {
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => PlaceAppointmentScreen(
+              //       salonId: salonId,
+              //       service: service,
+              //       openingTime: openingTime,
+              //       closingTime: closingTime,
+              //     ),
+              //   ),
+              // );
+            },
+            style: ElevatedButton.styleFrom(
+              elevation: 4,
+              surfaceTintColor: Colors.white,
+              backgroundColor: Colors.white,
+              shadowColor: Colors.black54,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              child: const Text("Edit"))
+            ),
+            child: const Text("Edit"),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
         ],
       ),
     );
