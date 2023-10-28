@@ -11,8 +11,7 @@ import 'package:glamourmebusiness/repositories/authentication/auth_repository.da
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/globals.dart';
-import 'package:glamourmebusiness/repositories/location/location_repository.dart';
-import 'package:glamourmebusiness/repositories/salon/salon_repository.dart';
+
 import 'package:glamourmebusiness/screens/business_create_screen1.dart';
 import 'package:glamourmebusiness/screens/login_screen.dart';
 import 'package:glamourmebusiness/screens/main_screen.dart';
@@ -22,7 +21,6 @@ import 'package:glamourmebusiness/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:syncfusion_flutter_core/localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class GlamourMeBusinessApp extends StatefulWidget {
@@ -60,22 +58,6 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     GlobalWidgetsLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
   ];
-
-  void _setupPushNotifications() async {
-    final fcm = FirebaseMessaging.instance;
-
-    await fcm.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    fcm.subscribeToTopic('appointments');
-  }
 
   // Used to redirect to the appropriate screen
   void _redirectToAuthenticate(auth.User? user) async {

@@ -7,9 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/models/user_model.dart';
-import 'package:glamourmebusiness/screens/appointments_index_screen.dart';
-import 'package:glamourmebusiness/screens/business_create_screen1.dart';
-import 'package:glamourmebusiness/screens/main_screen.dart';
 
 class SignupFormWidget extends StatefulWidget {
   const SignupFormWidget({super.key});

@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 
 class UploadToFirebase extends StatefulWidget {
   final void Function(String imageURL) notifyParent;
-  UploadToFirebase({super.key, required this.notifyParent});
+  const UploadToFirebase({super.key, required this.notifyParent});
 
   @override
   State<UploadToFirebase> createState() => _UploadToFirebaseState();

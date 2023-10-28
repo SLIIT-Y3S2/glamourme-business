@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
-import 'package:glamourmebusiness/constants.dart';
+import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -45,7 +45,7 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('$_subjectText'),
+            title: Text(_subjectText),
             content: SizedBox(
               height: 80,
               child: Column(
@@ -53,7 +53,7 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
                   Row(
                     children: <Widget>[
                       Text(
-                        '$_dateText',
+                        _dateText,
                         style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 20,
@@ -65,7 +65,7 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
                     height: 40,
                     child: Row(
                       children: <Widget>[
-                        Text(_timeDetails!,
+                        Text(_timeDetails,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 15)),
                       ],
@@ -102,23 +102,26 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Welcome ,",
+              Text(
+                AppLocalizations.of(context)!.welcome,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
               ),
-              BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              BlocBuilder<SalonBloc, SalonState>(
                 builder: (context, state) {
-                  return state is CurrentUserState
-                      ? const Text(
-                          // state.user!.email,
-                          'Kamal Perera',
-                          style: TextStyle(
-                              fontSize: 23, fontWeight: FontWeight.bold),
+                  return state is SalonLoaded
+                      ? Text(
+                          state.salon.salonName,
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                  ),
                         )
-                      : const Text(
+                      : Text(
                           'loading...',
-                          style: TextStyle(
-                              fontSize: 23, fontWeight: FontWeight.bold),
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                  ),
                         );
                 },
               )
@@ -155,21 +158,37 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: SfCalendar(
-                        view: CalendarView.day,
-                        initialDisplayDate: DateTime.now(),
-                        allowedViews: const <CalendarView>[
-                          CalendarView.month,
-                          CalendarView.week,
-                          CalendarView.workWeek,
-                          CalendarView.day
-                        ],
-                        onTap: calendarTapped,
-                        firstDayOfWeek: 1,
-                        dataSource: MeetingDataSource(meetings),
-                        monthViewSettings: const MonthViewSettings(
-                          appointmentDisplayMode:
-                              MonthAppointmentDisplayMode.indicator,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: SfCalendar(
+                          headerStyle: CalendarHeaderStyle(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                          appointmentTextStyle:
+                              Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                          view: CalendarView.day,
+                          initialDisplayDate: DateTime.now(),
+                          allowedViews: const <CalendarView>[
+                            CalendarView.month,
+                            CalendarView.week,
+                            CalendarView.workWeek,
+                            CalendarView.day
+                          ],
+                          onTap: calendarTapped,
+                          firstDayOfWeek: 1,
+                          dataSource: MeetingDataSource(meetings),
+                          monthViewSettings: const MonthViewSettings(
+                            appointmentDisplayMode:
+                                MonthAppointmentDisplayMode.indicator,
+                          ),
                         ),
                       ),
                     ),

@@ -17,7 +17,7 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<SalonBloc>(context).add(GetSalonEvent());
+    BlocProvider.of<SalonBloc>(context).add(const GetSalonEvent());
   }
 
   @override
@@ -51,7 +51,7 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.add_circle_outline,
+                              Icons.error_outline,
                               size: 48,
                               color: Color.fromARGB(255, 92, 92, 92),
                             ),
@@ -68,7 +68,7 @@ class _MyBusinessServicesState extends State<MyBusinessServices> {
                         MaterialPageRoute(
                           builder: (context) {
                             // Replace `YourNextScreen` with the actual screen you want to navigate to
-                            return MyBusinessAddNewService();
+                            return const MyBusinessAddNewService();
                           },
                         ),
                       );

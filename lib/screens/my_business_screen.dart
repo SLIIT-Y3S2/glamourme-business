@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
-import 'package:glamourmebusiness/globals.dart';
-import 'package:glamourmebusiness/constants.dart';
 import 'package:glamourmebusiness/widgets/profile_screen_list_item.dart';
 import 'package:glamourmebusiness/screens/my_business_services_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,7 +29,6 @@ class _MyBusinessState extends State<MyBusiness> {
             title: (state is SalonLoaded)
                 ? Container(
                     padding: const EdgeInsets.symmetric(
-                      // horizontal: 20,
                       vertical: 10,
                     ),
                     child: Row(
@@ -107,7 +104,7 @@ class _MyBusinessState extends State<MyBusiness> {
                 onTapFunc: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => MyBusinessServices()),
+                        builder: (context) => const MyBusinessServices()),
                   );
                 },
                 subtitle: AppLocalizations.of(context)!.servicesSentence,

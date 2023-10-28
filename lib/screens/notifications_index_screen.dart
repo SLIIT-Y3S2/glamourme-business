@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class NotificationsIndexScreen extends StatefulWidget {
   const NotificationsIndexScreen({super.key});
 
@@ -67,7 +69,7 @@ class _NotificationsIndexScreenState extends State<NotificationsIndexScreen> {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                'Notifications',
+                AppLocalizations.of(context)!.notifications,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.w900,
                     ),

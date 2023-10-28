@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:glamourmebusiness/models/service_model.dart';
 import 'package:glamourmebusiness/repositories/salon/salon_repository.dart';
