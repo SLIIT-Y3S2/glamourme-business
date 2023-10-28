@@ -74,7 +74,7 @@
 
   "services": "Services",
   "servicesSentence": "Add services, Manage all the services you offer.",
-  "openingHours": "opening Hours",
+  "openingHours": "Opening Hours",
   "openingHoursSentence": "Adjust your opening hours",
   "payments": "Payments",
   "paymentSentence": "Payment methods, Transaction History",
@@ -92,7 +92,7 @@
   "serviceDesc": "Service Description",
   "serviceDescHint": "Describe your service..",
   "serviceAvailableFor": "Service Available for",
-  "selectTime": "Select Time",
+  "selectTime": "Select Duration",
   "servicePrice": "Service price",
   "uploadImg": "Upload Image",
 

@@ -60,6 +60,23 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     GlobalWidgetsLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
   ];
+
+  void _setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+
+    await fcm.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    fcm.subscribeToTopic('appointments');
+  }
+
   // Used to redirect to the appropriate screen
   void _redirectToAuthenticate(auth.User? user) async {
     bool ifr = await IsFirstRun.isFirstRun();
@@ -95,7 +112,7 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
   @override
   void initState() {
     super.initState();
-
+    _setupPushNotifications();
     auth.FirebaseAuth.instance.authStateChanges().listen((user) async {
       _redirectToAuthenticate(user);
     });

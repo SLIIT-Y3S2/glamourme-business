@@ -158,7 +158,7 @@ class MyBusinessAddNewServiceState extends State<MyBusinessAddNewService> {
                     ),
 
                     const Text(
-                      'Select time',
+                      'Select Duration',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                     ),
