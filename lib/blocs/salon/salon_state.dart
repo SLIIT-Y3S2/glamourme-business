@@ -3,9 +3,6 @@ part of 'salon_bloc.dart';
 @immutable
 sealed class SalonState {
   const SalonState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class SalonInitial extends SalonState {}

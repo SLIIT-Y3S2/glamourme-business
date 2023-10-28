@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/constants.dart';
-import 'package:glamourmebusiness/models/category_model.dart';
 import 'package:glamourmebusiness/screens/business_create_screen2.dart';
 
 class CategoryCardWidget extends StatelessWidget {

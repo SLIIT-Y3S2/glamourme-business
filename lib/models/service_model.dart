@@ -1,4 +1,3 @@
-import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:glamourmebusiness/models/salon_model.dart';
 import 'package:uuid/uuid.dart';
