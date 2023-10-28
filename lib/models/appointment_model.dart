@@ -14,6 +14,7 @@ class AppointmentModel {
   final String customerId;
   final String serviceId;
   final String? salonName;
+  final String? clientName;
   final double appointmentPrice;
 
   AppointmentModel({
@@ -27,6 +28,7 @@ class AppointmentModel {
     required this.customerId,
     required this.serviceId,
     required this.salonName,
+    this.clientName,
     required this.appointmentPrice,
   });
 
@@ -47,6 +49,7 @@ class AppointmentModel {
       serviceId: doc['service'],
       salonName: salonDoc['salonName'],
       appointmentPrice: doc['appointmentPrice'],
+      clientName: clientDoc['name'],
     );
   }
 
@@ -61,7 +64,8 @@ class AppointmentModel {
     required this.serviceId,
     required this.appointmentPrice,
     this.salonName,
-  }) : id = uuid.v4();
+  })  : id = uuid.v4(),
+        clientName = '';
 
   Map<String, dynamic> toJson() {
     return {

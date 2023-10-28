@@ -58,6 +58,7 @@ dependencies:
 
   #intl for language support
   intl: any
+  firebase_messaging: ^14.7.2
 
 dev_dependencies:
   flutter_test:

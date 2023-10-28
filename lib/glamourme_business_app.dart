@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
@@ -36,6 +37,23 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     Locale('en', 'US'),
     Locale('si'),
   ];
+
+  void _setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+
+    await fcm.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    fcm.subscribeToTopic('appointmentPlaced');
+  }
+
   final List<LocalizationsDelegate> _localizationDelegate = const [
     AppLocalizations.delegate, // Add this line
     GlobalMaterialLocalizations.delegate,
@@ -81,6 +99,8 @@ class _GlamourMeAppState extends State<GlamourMeBusinessApp> {
     auth.FirebaseAuth.instance.authStateChanges().listen((user) async {
       _redirectToAuthenticate(user);
     });
+
+    _setupPushNotifications();
   }
 
   @override
