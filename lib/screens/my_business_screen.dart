@@ -95,7 +95,9 @@ class _MyBusinessState extends State<MyBusiness> {
                       ],
                     ),
                   )
-                : const Text('loading'),
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
           ),
           body: ListView(
             children: <Widget>[
