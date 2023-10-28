@@ -35,8 +35,23 @@ class _MyBusinessState extends State<MyBusiness> {
                       vertical: 10,
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                          child: Image.network(
+                            state.salon.imageUrl,
+                            height: 75,
+                            width: 75,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -63,6 +78,19 @@ class _MyBusinessState extends State<MyBusiness> {
                               ],
                             ),
                           ],
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            // Navigator.of(context).pushNamed(
+                            //   kEditSalonScreenRoute,
+                            //   arguments: state.salon,
+                            // );
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 20,
+                          ),
                         ),
                       ],
                     ),
