@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamourmebusiness/blocs/appointments/appointments_bloc.dart';
 import 'package:glamourmebusiness/blocs/authentication/authentication_bloc.dart';
-import 'package:glamourmebusiness/blocs/salon/salon_bloc.dart';
-
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:glamourmebusiness/constants.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,6 +37,41 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
           ),
         ),
         // Add a burger menu icon (hamburger menu).
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu), // You can use any icon you prefer.
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: green1,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                // Handle item 1 click here.
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Handle item 2 click here.
+              },
+            ),
+          ],
+        ),
       ),
 
       ///       body part started  ---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>-------------->>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -49,7 +80,6 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
           final List<Meeting> meetings = <Meeting>[];
           if (state is AppointmentsLoaded) {
             for (var appointment in state.appointments) {
-              log('message: ${appointment.startTime.toDate()}');
               meetings.add(
                 Meeting(
                   appointment.title,
@@ -65,28 +95,62 @@ class _AppointmentIndexScreenState extends State<AppointmentIndexScreen> {
                 userId: BlocProvider.of<AuthenticationBloc>(context).userId));
           }
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: SfCalendar(
-                  view: CalendarView.day,
-                  allowedViews: const <CalendarView>[
-                    CalendarView.month,
-                    CalendarView.week,
-                    CalendarView.workWeek,
+          return state is AppointmentsLoaded
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(25.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Welcome!",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Kamal",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.normal),
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: SfCalendar(
+                        view: CalendarView.day,
+                        initialDisplayDate: DateTime.now(),
+                        allowedViews: const <CalendarView>[
+                          CalendarView.month,
+                          CalendarView.week,
+                          CalendarView.workWeek,
+                        ],
+                        onTap: (calendarTapDetails) {},
+                        firstDayOfWeek: 1,
+                        dataSource: MeetingDataSource(meetings),
+                        monthViewSettings: const MonthViewSettings(
+                          appointmentDisplayMode:
+                              MonthAppointmentDisplayMode.indicator,
+                        ),
+                      ),
+                    ),
                   ],
-                  firstDayOfWeek: 1,
-                  dataSource: MeetingDataSource(meetings),
-                  monthViewSettings: const MonthViewSettings(
-                    appointmentDisplayMode:
-                        MonthAppointmentDisplayMode.indicator,
-                  ),
-                ),
-              ),
-            ],
-          );
+                )
+              : state is LoadingAppoinments
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : state is AppointmentError
+                      ? Center(
+                          child: Text(state.message),
+                        )
+                      : const Center(
+                          child: Text('No Appointments'),
+                        );
         },
       ),
     );
